@@ -28,7 +28,7 @@ class CodeAnalysis:
         for i in range(3):
             p = multiprocessing.Process(target=self._get_code_process, args=(self.task_queue, i,))
             p.start()
-        oss_info = OsslibMetadata_2.select(OsslibMetadata_2.q.oss_git_url != "")
+        oss_info = MOOSEMetadata.select(MOOSEMetadata.q.oss_git_url != "")
 
         for per_oss_info in oss_info:
             print ("acting")

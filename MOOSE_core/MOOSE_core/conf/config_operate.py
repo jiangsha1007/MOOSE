@@ -13,4 +13,4 @@ def get_dbconfig_uri():
     
     return r'mysql://'+user+':' + passwd+' @ ' + host + '/' + db+'?charset = utf8'
     '''
-    return r'mysql://guxin:guxin2015@115.28.172.133/OSSlib?charset=utf8'
+    return r'mysql://XXXXX:XXXXX@XXXXXXXXX/MOOSE?charset=utf8'

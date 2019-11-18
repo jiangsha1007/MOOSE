@@ -36,7 +36,7 @@ class QueueManager(BaseManager): pass
 if __name__ == '__main__':
     #conclude_similar()
     # 通过多个社区api获取repo列表,
-    osslib_community_list = OsslibCommunityApi.select()
+    MOOSE_community_list = MOOSECommunityApi.select()
     '''
     for per_software_community in osslib_community_list:
        eval(per_software_community.community_name)().get_oss_list(2)

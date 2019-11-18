@@ -79,10 +79,10 @@ WSGI_APPLICATION = 'MOOSE_web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'OSSlib',
-        'USER': 'guxin',
-        'PASSWORD': 'guxin2015',
-        'HOST': '115.28.172.133',
+        'NAME': 'XXXXX',
+        'USER': 'XXXXX',
+        'PASSWORD': 'XXXXXX',
+        'HOST': 'XXXXXXX',
         'PORT': '3306',
     }
 }

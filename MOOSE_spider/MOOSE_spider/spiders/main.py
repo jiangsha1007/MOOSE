@@ -50,7 +50,7 @@ class OsslibSpider(scrapy.Spider):
     dbObject = dbHandle()
     cursor = dbObject.cursor()
     # get repo from monitor list
-    cursor.execute("select oss_name from MOOSE_community_list")
+    cursor.execute("select repo_full_name from github_repo_base")
     results = cursor.fetchall()
     for result in results:
         scrapyed_list.append("https://api.github.com/repos/" + result[0])

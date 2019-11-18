@@ -103,6 +103,7 @@ class MOOSEActivityYearMonth(SQLObject):
     commits = IntCol(length = 11)
     oss_id = IntCol(length = 11)
 
+
 class MOOSEActivityTimezone(SQLObject):
     timezone = StringCol(length = 255)
     commits = IntCol(length = 11)
