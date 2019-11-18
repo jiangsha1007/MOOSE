@@ -1,0 +1,142 @@
+{% extends 'Base.html' %}
+{% load staticfiles %}
+{% block page_js %}
+    <script src="{% static 'vendors/bower_components/select2/dist/js/select2.full.min.js' %}"></script>
+    <script>
+    $(document).ready(function() {
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        $('#repo__add').click(function () {
+            $.ajax({
+                url: '/addtolist/',
+                type: 'POST',
+                data: {
+                    repo_name:$('#repo_name').val(),
+                    platform_id:$('#repo_platform').val()
+                },
+                success: function(data) {
+                   window.location.reload()
+                }
+                })
+        })
+        $('#monitor__add').click(function () {
+            $.ajax({
+                url: '/addtomonitor/',
+                type: 'POST',
+                data: {
+                    monitor_name:$('#monitor_name').val()
+                },
+                success: function(data) {
+                   window.location.reload()
+                }
+                })
+        })
+    })
+    </script>
+{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="{% static 'vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css' %}">
+        <link rel="stylesheet" href="{% static 'vendors/bower_components/animate.css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/bower_components/select2/dist/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app.min.css' %}">
+{% endblock %}
+{% block content%}
+<div class="content__inner">
+    <div class="row todo">
+        <div class="col">
+            <div class="form-group">
+                <input type="text" class="form-control form-control-lg" id="monitor_name" placeholder="Monitor project name">
+                <i class="form-group__bar"></i>
+            </div>
+            <div class="card">
+                <div class="toolbar toolbar--inner">
+                    <div class="toolbar__label">{{ oss_list_count }} repositories</div>
+                </div>
+                <div class="listview listview--bordered">
+                    {% if oss_list %}
+                        {% for per_oss_list in oss_list %}
+                            <div class="listview__item">
+                                <label class="custom-control custom-control--char todo__item">
+                                    <input class="custom-control-input" type="checkbox">
+                                    <span class="custom-control--char__helper"><i>A</i></span>
+                                    <div class="todo__info">
+                                        <h4 >{{ per_oss_list.oss_fullname }}</h4>
+                                        <span>{{ per_oss_list.oss_description }}</span>
+                                        <small>Created at {{ per_oss_list.oss_create_time }} {{ per_oss_list.oss_main_language }}</small>
+                                    </div>
+
+                                </label>
+
+                                <div class="actions listview__actions">
+                                    <div class="dropdown actions__item">
+                                        <i class="zmdi zmdi-more-vert" data-toggle="dropdown"></i>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" href="">Mark as completed</a>
+                                            <a class="dropdown-item" href="">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <button type="button" class="btn btn-light btn-block" id="monitor__add">Add this monitor project</button>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-new-todo" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Repos</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input id="repo_name" type="text" class="form-control" placeholder="Repository Full Name">
+                    </div>
+
+                    <div class="form-group select2-parent">
+                        <select id="repo_platform" class="select2">
+                            <option>Select a Platform</option>
+                            <option value="1">Github</option>
+                            <option value="2">SourceForge</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="repo__add" class="btn btn-link">Add</button>
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<button class="btn btn-light btn--action btn--fixed zmdi zmdi-plus" data-toggle="modal" data-target="#modal-new-todo"></button>
+</div>
+{% endblock %}

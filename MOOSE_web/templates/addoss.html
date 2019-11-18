@@ -1,0 +1,118 @@
+{% extends 'Base.html' %}
+{% load staticfiles %}
+{% block page_js %}
+    <script src="{% static 'vendor/bower_components/jquery-mask-plugin/dist/jquery.mask.min.js' %}"></script>
+    <script src="{% static 'vendor/bower_components/select2/dist/js/select2.full.min.js' %}"></script>
+    <script src="{% static 'vendor/bower_components/dropzone/dist/min/dropzone.min.js' %}"></script>
+    <script src="{% static 'vendor/bower_components/moment/min/moment.min.js' %}"></script>
+    <script src="{% static 'vendor/bower_components/flatpickr/dist/flatpickr.min.js' %}"></script>
+    <script src="{% static 'vendor/bower_components/nouislider/distribute/nouislider.min.js' %}"></script>
+    <script src="{% static 'vendor/bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js' %}"></script>
+    <script src="{% static 'vendor/bower_components/trumbowyg/dist/trumbowyg.min.js' %}"></script>
+    <script src="{% static 'vendor/bower_components/rateYo/min/jquery.rateyo.min.js' %}"></script>
+    <script src="{% static 'vendor/bower_components/jquery-text-counter/textcounter.min.js' %}"></script>
+    <script src="{% static 'vendor/bower_components/autosize/dist/autosize.min.js' %}"></script>
+    <script>
+    $(document).ready(function() {
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        $('.contacts__btn').click(function () {
+            $.ajax({
+                url: '/addtolist/',
+                type: 'POST',
+                data: {
+                    oss_id:$(this).attr('id'),
+                    oss_name:$(this).attr('ossname'),
+                    community_id:$('.select2').val()
+                },
+                success: function(data) {
+                    alert(1)
+                   $(this).val('REMOVE')
+                }
+                })
+        })
+    })
+    </script>
+{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="{% static 'vendor/bower_components/dropzone/dist/dropzone.css' %}">
+        <link rel="stylesheet" href="{% static 'vendor/bower_components/flatpickr/dist/flatpickr.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'vendor/bower_components/nouislider/distribute/nouislider.min.css' %}">
+        <link rel="stylesheet" href="{% static 'vendor/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css' %}">
+        <link rel="stylesheet" href="{% static 'vendor/bower_components/trumbowyg/dist/ui/trumbowyg.min.css' %}">
+        <link rel="stylesheet" href="{% static 'vendor/bower_components/rateYo/min/jquery.rateyo.min.css' %}">
+     <link rel="stylesheet" href="{% static 'vendor/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css' %}">
+        <link rel="stylesheet" href="{% static 'vendor/bower_components/animate.css/animate.min.css' %}">
+        <link rel="stylesheet" href="{% static 'vendor/bower_components/jquery.scrollbar/jquery.scrollbar.css' %}">
+        <link rel="stylesheet" href="{% static 'vendor/bower_components/select2/dist/css/select2.min.css' %}">
+    <!-- App styles -->
+        <link rel="stylesheet" href="{% static 'css/app.min.css' %}">
+    <link rel="stylesheet" href="{% static 'demo/css/demo.css'%}">
+{% endblock %}
+{% block content%}
+    <div class="content__inner">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Choose a community</h4>
+                    <div class="form-group">
+                            <select class="select2">
+                                {% if community %}
+                                    {% for per_community in community %}
+                                        <option value="{{ per_community.id }}">{{ per_community.community_name }}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                    </div>
+            </div>
+        </div>
+        <div class="contacts row">
+        <input type="hidden" id="hidden_oss_id">
+            {% if oss %}
+                {% for per_oss in oss %}
+                    <div class="col-xl-2 col-lg-3 col-sm-4 col-6">
+                        <div class="contacts__item">
+                            <a href="" class="contacts__img">
+                                <img src="https://avatars1.githubusercontent.com/u/{{ per_oss.community_id }}" alt="">
+                            </a>
+                            <div class="contacts__info">
+                                <strong>{{ per_oss.oss_fullname }}</strong>
+                                <small>{{ per_oss.oss_description }}</small>
+                            </div>
+                            <button class="contacts__btn" id="{{ per_oss.community_id }}" ossname="{{ per_oss.oss_fullname }}">Add to list</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,145 @@
+{% extends 'Base.html' %}
+{% load staticfiles %}
+{% block page_js %}
+
+
+{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="{% static 'vendor/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bower_components/animate.css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bower_components/select2/dist/css/select2.min.css' %}">
+{% endblock %}
+{% block content%}
+
+    <div class="card">
+        <div class="toolbar toolbar--inner">
+            <div class="toolbar__label">Current Active Developers</div>
+        </div>
+        <div class="listview listview--bordered q-a">
+            <div class="contacts row">
+                {% for per_author in author %}
+                    <div class="col-xl-2 col-lg-3 col-sm-4 col-6">
+                        <div class="contacts__item">
+                            <a href="" class="contacts__img">
+                                <img style="width: 50px" src="/static/img/avatar/{{per_author.user_id }}.png" alt="">
+                            </a>
+                            <div class="contacts__btn">{{ per_author.user_name }}</div>
+                            <div class="contacts__info">
+                                <strong>{{ per_author.oss.oss_name }}</strong>
+                                <small>Last commit:{{ per_author.last_commit_time }}</small>
+                                <small>Email:{{ per_author.user.email_url }}</small>
+                                <small>Company:{{ per_author.user.user_company }}</small>
+                            </div>
+
+
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Developer ranking </h4>
+            <h6 class="card-subtitle">Ranking by number of commits</h6>
+            <table class="table mb-3">
+                <thead  class="thead-inverse">
+                    <tr>
+                        <th>#</th>
+                        <th>Developer Name</th>
+                        <th>Commit</th>
+                        <th>Proportion </th>
+                        <th>Lines added</th>
+                        <th>Lines removed</th>
+                        <th>First commit</th>
+                        <th>Last commit</th>
+                        <th>Active days</th>
+                        <th>Company</th>
+                    </tr>
+                </thead>
+                {% if osslib_auth %}
+                {% for key,value in osslib_auth.items %}
+                    <thead  class="thead-default">
+                    <tr>
+                        <th colspan="10">{{ key }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for author_info in value %}
+                        <tr>
+                            <th scope="row">{{ author_info.by_commits  }}</th>
+                            <td>{{ author_info.author }}</td>
+                            <td>{{ author_info.commits }}</td>
+                            <td>{{ author_info.commits_frac }}</td>
+                            <td>{{ author_info.lines_added }}</td>
+                            <td>{{ author_info.lines_removed }}</td>
+                            <td>{{ author_info.first_commit }}</td>
+                            <td>{{ author_info.last_commit }}</td>
+                            <td>{{ author_info.active_days }}</td>
+                            <td>{{ author_info.user.user_company }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                {% endfor %}
+                {% endif %}
+            </table>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body" style="padding-right: 0px">
+            <h4 class="card-title">Domain ranking </h4>
+            <input type="hidden" id="oss_domain_name" value="{{ oss_domain_name }}">
+            <input type="hidden" id="oss_domain_commit" value="{{ oss_domain_commit }}">
+
+            <div id="container" style="height: 400px;margin-left: -60px;margin-right:-60px;margin-top: -50px"></div>
+            <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+            <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+            <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+            <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+            <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+            <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+            <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+            <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+            <script type="text/javascript">
+                var dom = document.getElementById("container");
+                var myChart = echarts.init(dom);
+                var app = {};
+                var date = $('#oss_domain_name').val().split(',');
+                var data = $('#oss_domain_commit').val().split(',');
+                option = null;
+                option = {
+                    tooltip:{},
+                    xAxis: {
+                        type: 'category',
+                        data:  date,
+                        axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff',
+                            fontSize:'12'
+                        }
+                    },
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff',
+                            fontSize:'12'
+                        }
+                    },
+                    },
+                    series: [{
+                        data:  data,
+                        type: 'bar',
+                        itemStyle:{ normal:{ color:'#1CDDB1' } },
+                    }]
+                };
+                if (option && typeof option === "object") {
+                    myChart.setOption(option, true);
+                }
+            </script>
+        </div>
+    </div>
+{% endblock %}

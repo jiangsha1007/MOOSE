@@ -1,0 +1,564 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block page_js %}
+    <script src="{% static 'vendor/bower_components/select2/dist/js/select2.full.min.js' %}"></script>
+    <script src="{% static 'vendor/bower_components/flot/jquery.flot.js' %}"></script>
+    <script src="{% static 'vendor/bower_components/flot/jquery.flot.pie.js' %}"></script>
+    <script src="{% static 'vendor/bower_components/flot/jquery.flot.resize.js' %}"></script>
+    <script src="{% static 'vendor/bower_components/flot.curvedlines/curvedLines.js' %}"></script>
+    <script src="{% static 'vendor/bower_components/flot.orderbars/js/jquery.flot.orderBars.js' %}"></script>
+    <script src="{% static 'demo/js/flot-charts/curved-line.js' %}"></script>
+    <script src="{% static 'demo/js/flot-charts/bar.js' %}"></script>
+    <script src="{% static 'demo/js/flot-charts/dynamic.js' %}"></script>
+    <script src="{% static 'demo/js/flot-charts/pie.js' %}"></script>
+    <script src="{% static 'demo/js/flot-charts/chart-tooltips.js' %}"></script>
+
+{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="{% static 'vendor/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bower_components/animate.css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bower_components/select2/dist/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/my.css' %}">
+    <style>
+    .score{margin:.35rem 0rem 0 0;-ms-flex-item-align:start;align-self:flex-start}
+    .score>span{width:180px;height:180px;background-color:rgba(255,255,255,.05);border-radius:50%;display:inline-block;;text-align:center;;vertical-align:middle;margin-right:10rem;padding-top: 70px}
+
+    .score>span>strong{display:block;font-size:3.0rem;font-weight:600;line-height:100%;}
+    .score>.small_circle{width:120px;height:120px;background-color:rgba(255,255,255,.05);border-radius:50%;display:inline-block;;text-align:center;;margin-right:5rem;padding-top: 45px}
+    .score>span>small{display:block;font-size:2.0rem;font-weight:600;line-height:100%;}
+    .score>span>small_title{display:block;font-size:1.0rem;font-weight:600;line-height:100%;}
+    </style>
+{% endblock %}
+{% block content%}
+<div class="row quick-stats">
+    <div class="col-sm-6 col-md-3">
+        <div class="quick-stats__item">
+            <div class="quick-stats__info">
+                <h2>Line Number</h2>
+                <small>Total lines</small>
+            </div>
+
+            <div class="quick-stats__chart peity-bar" style="padding-left: 30px"><h1>{{ oss_statistic.loc }}</h1></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="quick-stats__item">
+            <div class="quick-stats__info">
+                <h2>File Number</h2>
+                <small>Total files</small>
+            </div>
+
+            <div class="quick-stats__chart peity-bar" style="padding-left: 30px"><h1>{{ oss_statistic.foc }}</h1></div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <div class="quick-stats__item">
+            <div class="quick-stats__info">
+                <h2>Deveploper Number</h2>
+                <small>Total developers</small>
+            </div>
+
+            <div class="quick-stats__chart peity-bar" style="padding-left: 30px"><h1>{{ oss_statistic.doc }}</h1></div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <div class="quick-stats__item">
+            <div class="quick-stats__info">
+                <h2>Commit Number</h2>
+                <small>Total commits</small>
+            </div>
+
+            <div class="quick-stats__chart peity-bar" style="padding-left: 30px"><h1>{{ oss_statistic.coc }}</h1></div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="toolbar toolbar--inner">
+        <div class="toolbar__label">Health Score</div>
+    </div>
+    <div class="progress blue">
+        <h3 class="progress-title">Score</h3>
+        <div class="progress-bar" style="width:62.4%; background:#1CDDB1;">
+            <div class="progress-value">63.4</div>
+        </div>
+    </div>
+    <div class="listview listview--bordered q-a" style="float:left">
+        <div class="q-a__stat hidden-sm-down" style="float:left;width: 40%;">
+            <div id="container" style="height: 350px;width: 100%"></div>
+        </div>
+        <div class="listview__content" style="float:left;width: 50%">
+            <div class="table-responsive">
+                <table class="table mb-3">
+                    <thead class="thead-inverse">
+                    <tr>
+                        <th>oss name</th>
+                        <th>DA</th>
+                        <th>CA</th>
+                        <th>At</th>
+                        <th>DD</th>
+                        <th>PS</th>
+                        <th>DE</th>
+                        <th>score</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if oss_list %}
+                        {% for per_oss_list in oss_list %}
+                        <tr>
+                            <td>{{ per_oss_list.oss_fullname }}</td>
+                            <td>{{ per_oss_list.f1 }}</td>
+                            <td>{{ per_oss_list.f2 }}</td>
+                            <td>{{ per_oss_list.f3 }}</td>
+                            <td>{{ per_oss_list.f4 }}</td>
+                            <td>{{ per_oss_list.f5 }}</td>
+                            <td>{{ per_oss_list.f6 }}</td>
+                            <td style="font-size: 16pt">{{ per_oss_list.score }}</td>
+                        </tr>
+
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <input type="hidden" id="oss_name" value="{{ oss_name }}">
+        <input type="hidden" id="oss_score" value="{{ oss_score }}">
+
+        <script type="text/javascript">
+            var dom = document.getElementById("container");
+            var oss_name = $('#oss_name').val();
+            var oss_name_arr = oss_name.split(',');
+            var oss_score = $('#oss_score').val();
+            var oss_score_arr = oss_score.split(',');
+            var myChart = echarts.init(dom);
+            var app = {};
+            option = null;
+            var lineStyle = {
+                normal: {
+                    width: 1,
+                    opacity: 0.5
+                }
+            };
+            var seri = new Array();
+            for(var i =0; i<oss_name_arr.length; i++ ) {
+                seri[i]={name: oss_name_arr[i],type: 'radar',lineStyle: lineStyle,data: [oss_score_arr[i].split('-')],
+                    symbol: 'none',itemStyle: {normal: {color: '#bb414d'}},areaStyle: {normal: {opacity: 0.5}}};
+            }
+            option = {
+                backgroundColor: 'rgba(128, 128, 128, 0.0)' ,
+                legend: {
+                    bottom: 1,
+                    data: oss_name_arr,
+                    itemGap: 10,
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 12
+                    },
+                    selectedMode: 'single'
+                },
+                radar: {
+                    indicator: [
+                        {name: 'Develop Activity', max: 100},
+                        {name: 'Community Activity', max: 100},
+                        {name: 'Attractiveness', max: 100},
+                        {name: 'Develop Duration', max: 100},
+                        {name: 'Problem Solution', max: 100},
+                        {name: 'Develop Efficiency', max: 100}
+                    ],
+                    shape: 'circle',
+                    splitNumber: 5,
+                    name: {
+                        textStyle: {
+                            color: 'rgb(255, 255, 255)'
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: [
+                                'rgba(238, 197, 102, 0.1)', 'rgba(238, 197, 102, 0.2)',
+                                'rgba(238, 197, 102, 0.4)', 'rgba(238, 197, 102, 0.6)',
+                                'rgba(238, 197, 102, 0.8)', 'rgba(238, 197, 102, 1)'
+                            ].reverse()
+                        }
+                    },
+                    splitArea: {
+                        show: false
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(238, 197, 102, 0.5)'
+                        }
+                    }
+                },
+                series: seri
+            };;
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+       </script>
+    </div>
+</div>
+<div class="card">
+    <div class="toolbar toolbar--inner">
+        <div class="toolbar__label">{{ oss_list_count }} Repositories</div>
+    </div>
+    <div class="listview listview--bordered q-a">
+        {% if oss_list %}
+            {% for per_oss_list in oss_list %}
+                <div class="listview__item q-a__item">
+                    <div class="q-a__stat hidden-sm-down">
+                        <span>
+                            <strong>{{ per_oss_list.oss_line_count }}</strong>
+                            <small>Lines</small>
+                        </span>
+
+                        <span>
+                            <strong>{{ per_oss_list.oss_file_count }}</strong>
+                            <small>Files</small>
+                        </span>
+
+                        <span class="hidden-md-down">
+                            <strong>{{ per_oss_list.oss_developer_count }}</strong>
+                            <small>Developers</small>
+                        </span>
+                        <span>
+                            <strong>{{ per_oss_list.oss_commit_count }}</strong>
+                            <small>Commits</small>
+                        </span>
+                    </div>
+                    <div class="listview__content">
+                        <a href="questions-answers-details.html" class="listview__heading">{{ per_oss_list.oss_fullname }}</a>
+                        <p>{{ per_oss_list.oss_description }}</p>
+                        <div class="listview__attrs">
+                            <span>{{ per_oss_list.oss_main_language }}</span>
+                            <span>{{ per_oss_list.oss_license }}</span>
+                            <span>{{ per_oss_list.oss_create_time }} created</span>
+                            <span>{{ per_oss_list.oss_lastupdate_time }} updated</span>
+                            <span>{{ per_oss_list.oss_homepage }}</span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="stats-3-block block d-flex">
+                <div class="stats-3" style="padding-top: 15px;padding-left: 20px"><strong class="d-block">{{ oss_statistic.issue_count }}</strong><span class="d-block">Total Issues</span>
+                </div>
+                <div class="stats-3 d-flex justify-content-between text-center">
+                        <div class="item"><strong class="d-block strong-sm">{{ oss_statistic.issue_close_count }}</strong><span class="d-block span-sm">closed issue</span>
+                          <div class="line"></div><small>+1</small>
+                        </div>
+                        <div class="item"><strong class="d-block strong-sm">{{ issue_open }}</strong><span class="d-block span-sm">open issue</span>
+                          <div class="line"></div><small>+1</small>
+                        </div>
+                      </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="stats-3-block block d-flex">
+                <div class="stats-3" style="padding-top: 15px;padding-left: 20px"><strong class="d-block">{{ oss_statistic.pull_count }}</strong><span class="d-block">Total pr</span>
+                </div>
+                <div class="stats-3 d-flex justify-content-between text-center">
+                        <div class="item"><strong class="d-block strong-sm">{{ oss_statistic.pull_merged_count }}</strong><span class="d-block span-sm">merged pr</span>
+                          <div class="line"></div><small>+1</small>
+                        </div>
+                        <div class="item"><strong class="d-block strong-sm">{{ pulls_unmerged }}</strong><span class="d-block span-sm">unmerged pr</span>
+                          <div class="line"></div><small>+1</small>
+                        </div>
+                      </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="stats-3-block block d-flex">
+                <div class="stats-3" style="padding-top: 15px;padding-left: 20px"><strong class="d-block">745</strong><span class="d-block">Popularity</span>
+                </div>
+                <div class="stats-3 d-flex justify-content-between text-center">
+                        <div class="item"><strong class="d-block strong-sm">{{ oss_statistic.star_count }}</strong><span class="d-block span-sm">star</span>
+                          <div class="line"></div><small>+1</small>
+                        </div>
+                        <div class="item"><strong class="d-block strong-sm">{{  oss_statistic.fork_count}}</strong><span class="d-block span-sm">fork</span>
+                          <div class="line"></div><small>+1</small>
+                        </div>
+                      </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="stats-3-block block d-flex">
+                    <div class="item" style="width: 33%;text-align: center"><strong class="d-block strong-sm">{{ oss_statistic.issue_comment_count }}</strong><span class="d-block span-sm">issue comment count</span>
+                      <div class="line"></div><small>+1</small>
+                    </div>
+                    <div class="item" style="width: 33%;text-align: center"><strong class="d-block strong-sm">{{ oss_statistic.pull_comment_count }}</strong><span class="d-block span-sm">pr comment count</span>
+                      <div class="line"></div><small>+1</small>
+                    </div>
+                    <div class="item" style="width: 33%;text-align: center"><strong class="d-block strong-sm">{{ oss_statistic.pull_review_comment_count }}</strong><span class="d-block span-sm">pr review comment count</span>
+                      <div class="line"></div><small>+1</small>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="stats-3-block block d-flex">
+                    <div class="item" style="width: 33%;text-align: center"><strong class="d-block strong-sm">{{ oss_statistic.pull_review_count }}</strong><span class="d-block span-sm">pr review count</span>
+                      <div class="line"></div><small>+1</small>
+                    </div>
+                    <div class="item" style="width: 33%;text-align: center"><strong class="d-block strong-sm">{{ oss_statistic.issue_close_time }}</strong><span class="d-block span-sm">issue close time</span>
+                      <div class="line"></div><small>+1</small>
+                    </div>
+                    <div class="item" style="width: 33%;text-align: center"><strong class="d-block strong-sm">{{ oss_statistic.pull_merged_time }}</strong><span class="d-block span-sm">pull merged time</span>
+                      <div class="line"></div><small>+1</small>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card widget-pie">
+            <div class="col-6 col-sm-4 col-md-6 col-lg-4 widget-pie__item">
+                <div class="easy-pie-chart" data-percent="{{ issue_closed }}" data-size="80" data-track-color="rgba(0,0,0,0.5)" data-bar-color="#fff">
+                    <span class="easy-pie-chart__value">{{ issue_closed }}</span>
+                </div>
+                <div class="widget-pie__title">Issues<br> closed</div>
+            </div>
+
+            <div class="col-6 col-sm-4 col-md-6 col-lg-4 widget-pie__item">
+                <div class="easy-pie-chart" data-percent="{{ pull_merged }}" data-size="80" data-track-color="rgba(0,0,0,0.35)" data-bar-color="#fff">
+                    <span class="easy-pie-chart__value">{{ pull_merged }}</span>
+                </div>
+                <div class="widget-pie__title">Pulls<br> Merged</div>
+            </div>
+
+            <div class="col-6 col-sm-4 col-md-6 col-lg-4 widget-pie__item">
+                <div class="easy-pie-chart" data-percent="{{ developer_core }}" data-size="80" data-track-color="rgba(0,0,0,0.35)" data-bar-color="#fff">
+                    <span class="easy-pie-chart__value">{{ developer_core }}</span>
+                </div>
+                <div class="widget-pie__title">Core<br> Developers</div>
+            </div>
+
+            <div class="col-6 col-sm-4 col-md-6 col-lg-4 widget-pie__item">
+                <div class="easy-pie-chart" data-percent="{{ core_issue }}" data-size="80" data-track-color="rgba(0,0,0,0.35)" data-bar-color="#fff">
+                    <span class="easy-pie-chart__value">{{ core_issue }}</span>
+                </div>
+                <div class="widget-pie__title">Issues of<br>Core Developers</div>
+            </div>
+
+            <div class="col-6 col-sm-4 col-md-6 col-lg-4 widget-pie__item">
+                <div class="easy-pie-chart" data-percent="{{ core_pull }}" data-size="80" data-track-color="rgba(0,0,0,0.35)" data-bar-color="#fff">
+                    <span class="easy-pie-chart__value">{{ core_pull }}</span>
+                </div>
+                <div class="widget-pie__title">Pulls of<br>Core Developers</div>
+            </div>
+
+            <div class="col-6 col-sm-4 col-md-6 col-lg-4 widget-pie__item">
+                <div class="easy-pie-chart" data-percent="{{ active_day }}" data-size="80" data-track-color="rgba(0,0,0,0.35)" data-bar-color="#fff">
+                    <span class="easy-pie-chart__value">{{ active_day }}</span>
+                </div>
+                <div class="widget-pie__title">Active<br> days</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Language</h4>
+                <input type="hidden"  id="bar_lanuage_data" value="{{ bar_lanuage_data }}">
+                <input type="hidden"  id="bar_lanuage_arr" value="{{ bar_lanuage_arr }}">
+                <div id="main" class="flot-chart flot-bar"></div>
+                <div class="flot-chart-legends flot-chart-legends--bar"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="toolbar toolbar--inner">
+            <div class="toolbar__label">Tag</div>
+    </div>
+    <div class="card-body">
+        <div class="todo__labels">
+            {% if tag %}
+            {% for per_tag in tag %}
+                 <a href="">#{{ per_tag.topic }}</a>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="toolbar toolbar--inner">
+            <div class="toolbar__label">Sentiment</div>
+    </div>
+    <div class="card-body">
+            <div id="container_sentiment" style="height: 500px;margin-left: -100px;margin-right:-100px;margin-top: -20px"></div>
+            <input type="hidden"  id="sentiment_date" value="{{ sentiment_date }}">
+            <input type="hidden"  id="sentiment_pos" value="{{ sentiment_pos }}">
+            <input type="hidden"  id="sentiment_neg" value="{{ sentiment_neg }}">
+            <input type="hidden"  id="sentiment_neu" value="{{ sentiment_neu }}">
+            <input type="hidden"  id="sentiment_agv" value="{{ sentiment_agv }}">
+            <script type="text/javascript">
+                var dom = document.getElementById("container_sentiment");
+                var myChart = echarts.init(dom);
+                var date = $('#sentiment_date').val().split(',');
+                var data_pos = $('#sentiment_pos').val().split(',');
+                var data_neg = $('#sentiment_neg').val().split(',');
+                var data_neu = $('#sentiment_neu').val().split(',');
+                var data_agv = $('#sentiment_agv').val().split(',');
+                var app = {};
+                option = null;
+                option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross',
+                            crossStyle: {
+                                color: '#fff'
+                            }
+                        }
+                    },
+
+                    legend: {
+                        data:['positive','negative','neutrality'],
+                        textStyle:{//图例文字的样式
+                            color:'#fff',
+                            fontSize:16
+                        }
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            data: date,
+                            axisPointer: {
+                                type: 'shadow'
+                            },
+                            axisLabel: {
+                                show: true,
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize:'12'
+                                }
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    type: 'solid',
+                                    color: '#fff',
+                                }
+                            }
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            name: 'issue comment number',
+                            min: 0,
+                            interval: 200,
+                            axisLabel: {
+                                show: true,
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize:'12'
+                            }},
+                            nameTextStyle:{//图例文字的样式
+                                color:'#fff',
+                                fontSize:12
+                            },
+                            axisLine: {
+                               lineStyle: {
+                                   type: 'solid',
+                                   color:'#fff',
+                                }
+                            },
+                        },
+                        {
+                            type: 'value',
+                            name: 'Emotion degree',
+                            min: -1,
+                            interval: 1,
+                            axisLabel: {
+                                show: true,
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize:'12'
+                            }},
+                            nameTextStyle:{//图例文字的样式
+                                color:'#fff',
+                                fontSize:12
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    type: 'solid',
+                                    color: '#fff',
+                                }
+                            }
+                        }
+                    ],
+                    dataZoom: [{
+                    type: 'inside',
+                    start: 0,
+                    end: 100
+                    }, {
+                    start: 0,
+                    end: 100,
+                    handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                    handleSize: '80%',
+                    handleStyle: {
+                        color: '#fff',
+                        shadowBlur: 3,
+                        shadowColor: 'rgba(0, 0, 0, 0.6)',
+                        shadowOffsetX: 2,
+                        shadowOffsetY: 2
+                    },
+                    textStyle:{
+                        color:'#fff',
+                    },
+                    }],
+                    series: [
+                        {
+                            name:'positive',
+                            type:'bar',
+                            data:data_pos,
+                            itemStyle:{ normal:{ color:'#1CDDB1' } },
+                        },
+                        {
+                            name:'negative',
+                            type:'bar',
+                            data:data_neg,
+                            itemStyle:{ normal:{ color:'#bb414d' } },
+                        },
+                        {
+                            name:'neutrality',
+                            type:'bar',
+                            data:data_neu,
+                            itemStyle:{ normal:{ color:'#999999' } },
+                        },
+                        {
+                            name:'Emotion degree',
+                            type:'line',
+                            yAxisIndex: 1,
+                            data:data_agv
+                        }
+                    ]
+                };
+                ;
+                if (option && typeof option === "object") {
+                    myChart.setOption(option, true);
+                }
+            </script>
+        </div>
+</div>
+
+{% endblock %}

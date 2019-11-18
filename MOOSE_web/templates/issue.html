@@ -1,0 +1,87 @@
+{% extends 'Base.html' %}
+{% load staticfiles %}
+{% block page_js %}
+
+
+{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="{% static 'vendor/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bower_components/animate.css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bower_components/select2/dist/css/select2.min.css' %}">
+{% endblock %}
+{% block content%}
+    <div class="content__inner">
+        <header class="content__title">
+            <h1>Issue Tracker</h1>
+        </header>
+        <div class="card">
+            <div class="toolbar toolbar--inner">
+                <div class="toolbar__nav">
+                    <a class="active" href="">all issue {{ issue_count }}</a>
+                    <a href="" class="hidden-sm-down">open {{ issue_open_count }}</a>
+                    <a href="">Closed {{ issue_close_count }}</a>
+                </div>
+            </div>
+            <div class="listview listview--bordered issue-tracker">
+                {% if issue.object_list %}
+                     {% for per_issue in issue.object_list %}
+                        <div class="listview__item">
+                        {%  if per_issue.issue_state == 0 %}
+                            <div class="list__img hidden-sm-down" alt=""></div>
+                        {% endif %}
+                        {%  if per_issue.issue_state == 1 %}
+                            <div class="list__img2 hidden-sm-down" alt=""></div>
+                        {% endif %}
+                            <div class="listview__content text-truncate text-truncate">
+                                <a class="listview__heading" href="">{{ per_issue.issue_title}}</a>
+                                {% if  forloop.counter0 < 6 %}
+                                    <span class="issue-new__tag bg-orange">new</span>
+                                {% endif %}
+
+                                <p>{{ per_issue.issue_body }}</p>
+                            </div>
+
+                            <div class="issue-tracker__item">
+                                <span class="issue-tracker__tag bg-cyan">{{ per_issue.oss.oss_fullname}}</span>
+                            </div>
+                            <div class="issue-tracker__item">
+                                {%  if per_issue.issue_state == 0 %}
+                                    <span class="issue-tracker__tag bg-red">open</span>
+                                {% endif %}
+                                {%  if per_issue.issue_state == 1 %}
+                                    <span class="issue-tracker__tag bg-green">closed</span>
+                                {% endif %}
+                            </div>
+                            <div class="issue-tracker__item hidden-lg-down">
+                                <i class="zmdi zmdi-time"></i>{{ per_issue.issue_create_time }}
+                            </div>
+
+                            <div class="issue-tracker__item hidden-lg-down">
+                                <i class="zmdi zmdi-comment-alt"></i> {{ per_issue.issue_comment_count }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <div class="clearfix m-4"></div>
+            </div>
+        </div>
+
+        <nav>
+            <ul class="pagination justify-content-center">
+                {% if issue.has_previous %}
+                    <li class="page-item pagination-prev">
+                        <a class="page-link" href="?cid={{ cid }}&page={{ issue.previous_page_number }}"></a>
+                    </li>
+                {% endif %}
+                {% for pg in issue.paginator.page_range %}
+                    {% if issue.number == pg %}
+                        <li class="page-item active"><a class="page-link" href="?cid={{ cid }}&page={{ pg }}">{{ pg }}</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?cid={{ cid }}&page={{ pg }}">{{ pg }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                <li class="page-item pagination-next"><a class="page-link" href="#"></a></li>
+            </ul>
+        </nav>
+    </div>
+{% endblock %}
