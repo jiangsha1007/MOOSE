@@ -87,7 +87,7 @@ class MOOSEActivityHourOfWeek(SQLObject):
 
 
 class MOOSEActivityMonth(SQLObject):
-    month = StringCol(length = 255)
+    month = StringCol(length =255)
     commits = IntCol(length = 11)
     oss_id = IntCol(length = 11)
 
