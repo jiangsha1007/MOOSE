@@ -41,4 +41,20 @@ Monitoring and evaluation system of open source ecosystem
 ## MOOSE_WEB
 ### This module is the interactive interface between the user and the system, and uses the python Django framework
 > Users can generate the ecosystem they need to monitor, just as it is convenient to generate a song list.  
-> Provide exquisite and rich data report presentation.
+> Provide exquisite and rich data report presentation.  
+![Image text](https://github.com/jiangsha1007/MOOSE/raw/master/MOOSE_web/image-folder/1.png)  
+![Image text](https://github.com/jiangsha1007/MOOSE/raw/master/MOOSE_web/image-folder/2.png)  
+![Image text](https://github.com/jiangsha1007/MOOSE/raw/master/MOOSE_web/image-folder/3.png)  
+![Image text](https://github.com/jiangsha1007/MOOSE/raw/master/MOOSE_web/image-folder/4.png)  
+![Image text](https://github.com/jiangsha1007/MOOSE/raw/master/MOOSE_web/image-folder/5.png)  
+![Image text](https://github.com/jiangsha1007/MOOSE/raw/master/MOOSE_web/image-folder/6.png)  
+![Image text](https://github.com/jiangsha1007/MOOSE/raw/master/MOOSE_web/image-folder/7.png)  
+![Image text](https://github.com/jiangsha1007/MOOSE/raw/master/MOOSE_web/image-folder/8.png)  
+![Image text](https://github.com/jiangsha1007/MOOSE/raw/master/MOOSE_web/image-folder/9.png)  
+![Image text](https://github.com/jiangsha1007/MOOSE/raw/master/MOOSE_web/image-folder/10.png)  
+![Image text](https://github.com/jiangsha1007/MOOSE/raw/master/MOOSE_web/image-folder/11.png) 
+
+# Next work  
+- Modularize each module to facilitate the addition of subsequent functions  
+- Rich data types, including developer network map, emotion analysis, bug analysis, etc  
+- Optimize data crawling and code download performance
