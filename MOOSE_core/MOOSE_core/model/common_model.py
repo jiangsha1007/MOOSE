@@ -6,14 +6,14 @@ sqlhub.processConnection = connectionForURI(uri)
 
 
 # oss community api
-class OsslibCommunityApi(SQLObject):
+class MOOSECommunityApi(SQLObject):
     community_name = StringCol(length = 50, notNone = True)
     get_oss_list_api = StringCol(length = 255, notNone = True)
     get_oss_single_api = StringCol(length = 255, notNone = True)
     git_api = StringCol(length=255)
 
 
-class OsslibMetadata_2(SQLObject):
+class MOOSEMetadata(SQLObject):
     oss_id = IntCol(length = 50)
     oss_from = IntCol(length = 11)
     oss_name = StringCol(length = 50)
@@ -45,13 +45,12 @@ class OsslibMetadata_2(SQLObject):
     oss_all_day = IntCol(length = 11)
     oss_active_day = IntCol(length = 11)
 
-class OsslibTopic(SQLObject):
+class MOOSElibTopic(SQLObject):
     oss_id = IntCol(length = 11)
     topic = StringCol(length = 100)
-	
-	
-	
-class OsslibGeneral(SQLObject):
+
+
+class MOOSEGeneral(SQLObject):
     project_name = StringCol(length = 255)
     generated = StringCol(length = 255)
     generator = StringCol(length = 255)
@@ -63,49 +62,54 @@ class OsslibGeneral(SQLObject):
     authors = StringCol(length = 255)
     oss_id = IntCol(length = 11)
 
-class OsslibActivityWeek (SQLObject):
-    week=IntCol(length = 11)
-    commits=IntCol(length = 11)
-    oss_id = IntCol(length = 11)
-	
-	
-class OsslibActivityHour (SQLObject):
+class MOOSEActivityWeek (SQLObject):
+    week=IntCol(length=11)
+    commits=IntCol(length=11)
+    oss_id = IntCol(length=11)
+
+
+class MOOSEActivityHour (SQLObject):
     hour = IntCol(length = 11)
     commits = IntCol(length = 11)
     oss_id = IntCol(length = 11)
-	
-class OsslibActivityDay(SQLObject):
+
+
+class MOOSEActivityDay(SQLObject):
     day = StringCol(length = 255)
     commits = IntCol(length = 11)
     oss_id = IntCol(length = 11)
-	
-class OsslibActivityHourOfWeek(SQLObject):
+
+
+class MOOSEActivityHourOfWeek(SQLObject):
     weekday_hour = StringCol(length = 255)
     commits = IntCol(length = 11)
     oss_id = IntCol(length = 11)
-	
-class OsslibActivityMonth(SQLObject):
+
+
+class MOOSEActivityMonth(SQLObject):
     month = StringCol(length = 255)
     commits = IntCol(length = 11)
     oss_id = IntCol(length = 11)
 
 
-class OsslibActivityYear(SQLObject):
+class MOOSEActivityYear(SQLObject):
     year = IntCol(length = 11)
     commits = IntCol(length = 11)
     oss_id = IntCol(length = 11)
-	
-class OsslibActivityYearMonth(SQLObject):
+
+
+class MOOSEActivityYearMonth(SQLObject):
     yearmonth = StringCol(length = 255)
     commits = IntCol(length = 11)
     oss_id = IntCol(length = 11)
-	
-class OsslibActivityTimezone(SQLObject):
+
+class MOOSEActivityTimezone(SQLObject):
     timezone = StringCol(length = 255)
     commits = IntCol(length = 11)
     oss_id = IntCol(length = 11)
-	
-class OsslibAuthorList(SQLObject):
+
+
+class MOOSEAuthorList(SQLObject):
     user_id= IntCol (length = 11)
     author = StringCol(length = 255)
     commits = IntCol(length = 11)
@@ -118,23 +122,26 @@ class OsslibAuthorList(SQLObject):
     active_days = IntCol(length = 11)
     by_commits = IntCol(length = 11)
     oss_id = IntCol(length = 11)
-	
-class OsslibAuthorCumulated(SQLObject):
+
+
+class MOOSEAuthorCumulated(SQLObject):
     date = StringCol(length = 255)
     author = StringCol(length = 255)
     cumulated_commits = IntCol(length = 11)
     cumulated_lines = IntCol(length = 11)
     oss_id = IntCol(length = 11)
-	
-class OsslibAuthorMonth(SQLObject):
+
+
+class MOOSEAuthorMonth(SQLObject):
     month = StringCol(length = 255)
     author = StringCol(length = 255)  
     commits = StringCol(length = 255)
     next_top5 = StringCol(length = 255)
     author_number = IntCol(length = 11)
     oss_id = IntCol(length = 11)
-	
-class OsslibAuthorYear(SQLObject):
+
+
+class MOOSEAuthorYear(SQLObject):
     year = IntCol(length = 11)
     author = StringCol(length = 255)
     commits = StringCol(length = 255)
@@ -142,18 +149,21 @@ class OsslibAuthorYear(SQLObject):
     author_number = IntCol(length = 11)
     oss_id = IntCol(length = 11)
 
-class OsslibDomain(SQLObject):
+
+class MOOSEDomain(SQLObject):
     domain = StringCol(length = 255)
     commits = IntCol(length = 11)
     commits_frac = StringCol(length=255)
     oss_id = IntCol(length = 11)
-	
-class OsslibFileDateCount(SQLObject):
+
+
+class MOOSEFileDateCount(SQLObject):
     date = StringCol(length = 255)
     files = IntCol(length = 11)
     oss_id = IntCol(length = 11)
 
-class OsslibFileExtension(SQLObject):
+
+class MOOSEFileExtension(SQLObject):
     extension = StringCol(length = 255)
     files = StringCol(length = 255)
     line = StringCol(length = 255)
@@ -165,27 +175,30 @@ class OsslibLineDateCount(SQLObject):
     line = IntCol(length = 11)
     oss_id = IntCol(length = 11)
 
-class OsslibTag(SQLObject):
+
+class MOOSETag(SQLObject):
     name = StringCol(length = 255)
     date = StringCol(length = 255)
     commits = IntCol(length = 11)
     authors = StringCol(length = 3000)
     oss_id = IntCol(length = 11)
- 
-class OsslibDeveloper(SQLObject):
+
+
+class MOOSEDeveloper(SQLObject):
     oss_id = IntCol(length = 11)
     user_id = IntCol(length = 20)
     update_time = StringCol(length = 255)
     user_commit_count = IntCol(length = 11)
-	
-class OsslibCommunity(SQLObject):
+
+
+class MOOSECommunity(SQLObject):
     user_id = IntCol(length=11)
     community_name = StringCol(length=255)
     create_time = DateTimeCol()
     status = IntCol(length=11)
 
 
-class OsslibCommunityList(SQLObject):
+class MOOSECommunityList(SQLObject):
     community_id = IntCol(length=11)
     oss_id = IntCol(length=11)
     meta_id = IntCol(length=11)
@@ -194,7 +207,7 @@ class OsslibCommunityList(SQLObject):
     oss_name = StringCol(length=255)
 
 
-class OsslibStatistic(SQLObject):
+class MOOSEStatistic(SQLObject):
     community_id = IntCol(length=11)
     issue_count = IntCol(length=11)
     issue_close_count = IntCol(length=11)
@@ -224,7 +237,7 @@ class OsslibStatistic(SQLObject):
     issue_change = FloatCol()
 
 
-class OsslibIssue(SQLObject):
+class MOOSEIssue(SQLObject):
     issue_user_type = StringCol(length=100)
     issue_state = IntCol(length=11)
     oss_id = IntCol(length=11)
@@ -240,7 +253,7 @@ class OsslibIssue(SQLObject):
     issue_title = StringCol(length=5000)
 
 
-class OsslibPulls(SQLObject):
+class MOOSEPulls(SQLObject):
     pull_id = IntCol(length=11)
     pull_number = IntCol(length=11)
     pull_state = IntCol(length=11)
@@ -261,7 +274,7 @@ class OsslibPulls(SQLObject):
     request_reviewer = StringCol(length=500)
 
 
-class OsslibIssueComment(SQLObject):
+class MOOSEIssueComment(SQLObject):
     issue_comment_id = IntCol(length=11)
     user_id = IntCol(length=11)
     created_time = StringCol(length=100)
@@ -272,33 +285,33 @@ class OsslibIssueComment(SQLObject):
 
 
 
-class OsslibStatisticCommitYearmonth(SQLObject):
+class MOOSEStatisticCommitYearmonth(SQLObject):
     community_id = IntCol(length=11)
     yearmonth = StringCol(length=50)
     commits_count = IntCol(length=11)
 
 
-class OsslibStatisticIssueYearmonth(SQLObject):
+class MOOSEStatisticIssueYearmonth(SQLObject):
     community_id = IntCol(length=11)
     yearmonth = StringCol(length=50)
     issue_count = IntCol(length=11)
     close_issue_count = IntCol(length=11)
 
-class OsslibStatisticPullYearmonth(SQLObject):
+class MOOSEStatisticPullYearmonth(SQLObject):
     community_id = IntCol(length=11)
     yearmonth = StringCol(length=50)
     pull_count = IntCol(length=11)
     merged_pull_count = IntCol(length=11)
 
 
-class OsslibStatisticCommitHourday(SQLObject):
+class MOOSEStatisticCommitHourday(SQLObject):
     community_id = IntCol(length=11)
     day = IntCol(length=11)
     commit_count = IntCol(length=11)
     hour = IntCol(length=11)
 
 
-class OsslibStatisticAuthor(SQLObject):
+class MOOSEStatisticAuthor(SQLObject):
     community_id = IntCol(length=11)
     oss_id = IntCol(length=11)
     commit_count = IntCol(length=11)
@@ -307,20 +320,20 @@ class OsslibStatisticAuthor(SQLObject):
     user_name = StringCol(length=100)
 
 
-class OsslibUser(SQLObject):
+class MOOSEUser(SQLObject):
     avatar_url = StringCol(length=500)
     user_name = StringCol(length=100)
     user_fullname = StringCol(length=100)
     user_id = IntCol(length=11)
 
 
-class OsslibStatisticAuthorYearmonth(SQLObject):
+class MOOSEStatisticAuthorYearmonth(SQLObject):
     yearmonth = StringCol(length=50)
     community_id = IntCol(length=11)
     developer_count = IntCol(length=11)
 
 
-class OsslibStatisticSentiment(SQLObject):
+class MOOSEStatisticSentiment(SQLObject):
     community_id = IntCol(length=11)
     yearmonth = StringCol(length=50)
     neg = IntCol(length=11)
