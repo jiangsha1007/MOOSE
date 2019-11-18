@@ -58,3 +58,7 @@ Monitoring and evaluation system of open source ecosystem
 - Modularize each module to facilitate the addition of subsequent functions  
 - Rich data types, including developer network map, emotion analysis, bug analysis, etc  
 - Optimize data crawling and code download performance
+
+# Contact
+- Email:jiangsha1007@sjtu.edu.cn  
+- Wechat:jiangxxs Remarks:MOOSE
