@@ -40,3 +40,5 @@ Monitoring and evaluation system of open source ecosystem
 
 ## MOOSE_WEB
 ### This module is the interactive interface between the user and the system, and uses the python Django framework
+> Users can generate the ecosystem they need to monitor, just as it is convenient to generate a song list.  
+> Provide exquisite and rich data report presentation.
