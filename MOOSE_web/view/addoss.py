@@ -15,7 +15,7 @@ def searchoss(request):
     extra_info.update(community)
     if request.method == "POST":
         key = request.POST.get('serachoss')
-        oss_id = OsslibTopic.objects.filter(topic=key)
+        oss_id = MOOSETopic.objects.filter(topic=key)
 
         oss_info_all = []
         for per_oss_id in oss_id:

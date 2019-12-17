@@ -1,4 +1,4 @@
-"""OSSlib_web URL Configuration
+"""MOOSE_web URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -35,4 +35,6 @@ urlpatterns = [
     path('issue/', issue),
     path('pull/', pull),
     path('author/', author),
+    path('monitor/', monitor),
+    path('getIndex/', getIndex),
 ]

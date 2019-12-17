@@ -14,11 +14,11 @@ import json
 
 def get_nav_list(uid):
     extra_info = dict()
-    community = OsslibCommunity.objects.filter(user_id=int(uid))
-    community_list = OsslibCommunityList.objects.filter(community_id__in=community)
+    community = MOOSECommunity.objects.filter(user_id=int(uid))
+    community_list = MOOSECommunityList.objects.filter(community_id__in=community)
     extra_info.__setitem__('community', community)
     extra_info.__setitem__('community_list', community_list)
-    user = OsslibAdmin.objects.get(id=uid)
+    user = MOOSEAdmin.objects.get(id=uid)
     extra_info.__setitem__('user', user)
     return extra_info
 

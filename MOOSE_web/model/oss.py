@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class OsslibMeta(models.Model):
+class MOOSEMeta(models.Model):
     oss_id = models.BigIntegerField(unique=True)
     oss_from = models.IntegerField()
     oss_name = models.CharField(max_length=50)
@@ -47,12 +47,12 @@ class OsslibMeta(models.Model):
         return self.oss_fullname
 
     class Meta:
-        db_table = 'osslib_metadata_2'
+        db_table = 'moose_metadata'
 
-class OsslibIssue(models.Model):
+class MOOSEIssue(models.Model):
     issue_user_type = models.IntegerField()
     issue_state = models.IntegerField()
-    oss = models.ForeignKey(to='OsslibMeta',to_field='oss_id',on_delete='models.CASCADE')
+    oss = models.ForeignKey(to='MOOSEMeta',to_field='oss_id',on_delete='models.CASCADE')
     user_id = models.BigIntegerField()
     issue_close_time = models.CharField(max_length=100)
     issue_create_time = models.CharField(max_length=100)
@@ -68,11 +68,11 @@ class OsslibIssue(models.Model):
         return self.issue_body
 
     class Meta:
-        db_table = 'osslib_issue'
+        db_table = 'moose_issue'
         ordering = ['-issue_create_time']
 
 
-class OsslibPulls(models.Model):
+class MOOSEPulls(models.Model):
     pull_id = models.IntegerField()
     pull_number = models.IntegerField()
     pull_state = models.IntegerField()
@@ -84,7 +84,7 @@ class OsslibPulls(models.Model):
     pull_is_merged = models.IntegerField()
     update_time = models.CharField(max_length=100)
     user_id = models.IntegerField()
-    oss = models.ForeignKey(to='OsslibMeta', to_field='oss_id', on_delete='models.CASCADE')
+    oss = models.ForeignKey(to='MOOSEMeta', to_field='oss_id', on_delete='models.CASCADE')
     pull_title = models.TextField()
     pull_body = models.TextField()
     pull_is_reviewed = models.IntegerField()
@@ -96,11 +96,12 @@ class OsslibPulls(models.Model):
         return self.pull_body
 
     class Meta:
-        db_table = 'osslib_pulls'
+        db_table = 'moose_pulls'
         ordering = ['-pull_create_time']
 
 
-class OsslibStatistic(models.Model):
+class MOOSEStatistic(models.Model):
+    oss_id = models.IntegerField()
     community_id = models.IntegerField()
     issue_count = models.IntegerField()
     issue_comment_count = models.IntegerField()
@@ -130,76 +131,76 @@ class OsslibStatistic(models.Model):
     active_days = models.IntegerField()
 
     class Meta:
-        db_table = 'osslib_statistic'
+        db_table = 'moose_statistic'
         ordering = ['-update_time']
 
 
-class OsslibStatisticCommitYearmonth(models.Model):
+class MOOSEStatisticCommitYearmonth(models.Model):
     community_id = models.IntegerField()
     yearmonth = models.CharField(max_length=100)
     commits_count = models.IntegerField()
 
     class Meta:
-        db_table = 'osslib_statistic_commit_yearmonth'
+        db_table = 'moose_statistic_commit_yearmonth'
         ordering = ['yearmonth']
 
 
-class OsslibStatisticIssueYearmonth(models.Model):
+class MOOSEStatisticIssueYearmonth(models.Model):
     community_id = models.IntegerField()
     yearmonth = models.CharField(max_length=100)
     issue_count = models.IntegerField()
     close_issue_count = models.IntegerField()
 
     class Meta:
-        db_table = 'osslib_statistic_issue_yearmonth'
+        db_table = 'moose_statistic_issue_yearmonth'
         ordering = ['yearmonth']
 
 
-class OsslibStatisticPullYearmonth(models.Model):
+class MOOSEStatisticPullYearmonth(models.Model):
     community_id = models.IntegerField()
     yearmonth = models.CharField(max_length=100)
     pull_count = models.IntegerField()
     merged_pull_count = models.IntegerField()
 
     class Meta:
-        db_table = 'osslib_statistic_pull_yearmonth'
+        db_table = 'moose_statistic_pull_yearmonth'
         ordering = ['yearmonth']
 
-class OsslibStatisticAuthorYearmonth(models.Model):
+class MOOSEStatisticAuthorYearmonth(models.Model):
     community_id = models.IntegerField()
     yearmonth = models.CharField(max_length=100)
     developer_count = models.IntegerField()
 
     class Meta:
-        db_table = 'osslib_statistic_author_yearmonth'
+        db_table = 'moose_statistic_author_yearmonth'
         ordering = ['yearmonth']
 
 
-class OsslibStatisticCommitHourday(models.Model):
+class MOOSEStatisticCommitHourday(models.Model):
     community_id = models.IntegerField()
     day = models.IntegerField()
     commit_count = models.IntegerField()
     hour = models.IntegerField()
 
     class Meta:
-        db_table = 'osslib_statistic_commit_hourday'
+        db_table = 'moose_statistic_commit_hourday'
         ordering = ['day', 'hour']
 
 
-class OsslibStatisticAuthor(models.Model):
+class MOOSEStatisticAuthor(models.Model):
     community_id = models.IntegerField()
-    oss = models.ForeignKey(to='OsslibMeta', to_field='oss_id', on_delete='models.CASCADE')
+    oss = models.ForeignKey(to='MOOSEMeta', to_field='oss_id', on_delete='models.CASCADE')
     commit_count = models.IntegerField()
     last_commit_time = models.CharField(max_length=100)
-    user = models.ForeignKey(to='OsslibUser', to_field='user_id', on_delete='models.CASCADE')
+    user = models.ForeignKey(to='MOOSEUser', to_field='user_id', on_delete='models.CASCADE')
     user_name = models.CharField(max_length=100)
 
     class Meta:
-        db_table = 'osslib_statistic_author'
+        db_table = 'moose_statistic_author'
         ordering = ['-last_commit_time']
 
 
-class OsslibUser(models.Model):
+class MOOSEUser(models.Model):
     user_id = models.IntegerField(unique=True)
     user_name = models.CharField(max_length=100)
     avatar_url = models.CharField(max_length=500)
@@ -218,12 +219,12 @@ class OsslibUser(models.Model):
     user_location = models.CharField(max_length=200)
 
     class Meta:
-        db_table = 'osslib_user'
+        db_table = 'moose_user'
         ordering = ['user_id']
 
 
-class OsslibAuthorList(models.Model):
-    user = models.ForeignKey(to='OsslibUser', to_field='user_id', on_delete='models.CASCADE')
+class MOOSEAuthorList(models.Model):
+    user = models.ForeignKey(to='MOOSEUser', to_field='user_id', on_delete='models.CASCADE')
     author = models.CharField(max_length=100)
     commits = models.IntegerField()
     commits_frac = models.CharField(max_length=100)
@@ -234,25 +235,25 @@ class OsslibAuthorList(models.Model):
     age = models.CharField(max_length=100)
     active_days = models.IntegerField()
     by_commits = models.IntegerField()
-    oss = models.ForeignKey(to='OsslibMeta', to_field='oss_id', on_delete='models.CASCADE')
+    oss = models.ForeignKey(to='MOOSEMeta', to_field='oss_id', on_delete='models.CASCADE')
 
     class Meta:
-        db_table = 'osslib_author_list'
+        db_table = 'moose_author_list'
         ordering = ['-commits']
 
 
-class OsslibDomain(models.Model):
+class MOOSEDomain(models.Model):
     domain = models.CharField(max_length=500)
     commits = models.IntegerField()
     commits_frac = models.CharField(max_length=100)
     oss_id = models.IntegerField()
 
     class Meta:
-        db_table = 'osslib_domain'
+        db_table = 'moose_domain'
         ordering = ['-commits']
 
 
-class OsslibStatisticSentiment(models.Model):
+class MOOSEStatisticSentiment(models.Model):
     community_id = models.IntegerField()
     yearmonth = models.CharField(max_length=100)
     neg = models.IntegerField()
@@ -261,7 +262,7 @@ class OsslibStatisticSentiment(models.Model):
     ave = models.IntegerField()
 
     class Meta:
-        db_table = 'osslib_statistic_sentiment'
+        db_table = 'moose_statistic_sentiment'
         ordering = ['yearmonth']
 
 
@@ -270,7 +271,7 @@ class MOOSETag(models.Model):
     topic = models.CharField(max_length=200)
 
     class Meta:
-        db_table = 'osslib_topic'
+        db_table = 'moose_topic'
         ordering = ['oss_id']
 
 

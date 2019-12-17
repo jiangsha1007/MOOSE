@@ -14,7 +14,7 @@ def new(request):
     uid = request.session['user_id']
     community = get_nav_list(uid)
     extra_info.update(community)
-    oss_meta_list = OsslibMeta.objects.filter(uid=uid, status=1)
+    oss_meta_list = MOOSEMeta.objects.filter(uid=uid, status=1)
     oss_mata = dict()
     oss_mata.__setitem__('oss_list', oss_meta_list)
     oss_mata.__setitem__('oss_list_count', len(oss_meta_list))
@@ -26,7 +26,7 @@ def addtolist(request):
     uid = request.session['user_id']
     repo_name = request.POST.get('repo_name')
     platform_id = request.POST.get('platform_id')
-    oss_platform_api = OsslibPlatform.objects.get(id=platform_id)
+    oss_platform_api = MOOSEPlatform.objects.get(id=platform_id)
     if oss_platform_api:
         get_single_api = oss_platform_api.get_oss_single_api
     repo_url = get_single_api + repo_name
@@ -34,7 +34,7 @@ def addtolist(request):
         repo_data = get_html_json(repo_url, getHeader())[0]
     except:
         pass
-    oss_meta_item = OsslibMeta()
+    oss_meta_item = MOOSEMeta()
     oss_meta_item.oss_fullname = repo_data['full_name']
     oss_meta_item.oss_name = repo_data['name']
     oss_meta_item.oss_id = repo_data['id']
@@ -103,15 +103,15 @@ def addtolist(request):
 def addtomonitor(request):
     uid = request.session['user_id']
     monitor_name = request.POST.get('monitor_name')
-    oss_community = OsslibCommunity()
+    oss_community = MOOSECommunity()
     oss_community.user_id = uid
     oss_community.community_name = monitor_name
     oss_community.status = 0
     oss_community.save()
-    oss_meta_list = OsslibMeta.objects.filter(uid=uid, status=1)
+    oss_meta_list = MOOSEMeta.objects.filter(uid=uid, status=1)
     if oss_meta_list:
         for per_oss_meta in oss_meta_list:
-            oss_community_list = OsslibCommunityList()
+            oss_community_list = MOOSECommunityList()
             oss_community_list.community_id = oss_community.id
             oss_community_list.oss_name = per_oss_meta.oss_fullname
             oss_community_list.oss_id = per_oss_meta.oss_id

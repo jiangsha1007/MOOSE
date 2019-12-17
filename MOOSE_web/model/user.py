@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class OsslibAdmin(models.Model):
+class MOOSEAdmin(models.Model):
     user_name = models.CharField(max_length=128, unique=True)
     user_pasword = models.CharField(max_length=256)
     user_email = models.EmailField(unique=True)
@@ -12,4 +12,4 @@ class OsslibAdmin(models.Model):
 
     class Meta:
         ordering = ['register_time']
-        db_table = 'osslib_admin'
+        db_table = 'moose_admin'

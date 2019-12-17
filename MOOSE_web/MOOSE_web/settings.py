@@ -38,8 +38,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'MOOSE_web',
-    'model'
+    'model',
+    'influxdb_metrics'
+
 ]
+INFLUXDB_HOST = "192.168.3.117"
+INFLUXDB_PORT = 8086
+INFLUXDB_USER = "moose"
+INFLUXDB_PASSWORD = "moose"
+INFLUXDB_DATABASE = "moose"
+INFLUXDB_TIMEOUT = 5
+INFLUXDB_TAGS_HOST = 'moose'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,10 +89,10 @@ WSGI_APPLICATION = 'MOOSE_web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'XXXXX',
-        'USER': 'XXXXX',
-        'PASSWORD': 'XXXXXX',
-        'HOST': 'XXXXXXX',
+        'NAME': 'MOOSE',
+        'USER': 'guxin',
+        'PASSWORD': 'guxin2015',
+        'HOST': '115.28.172.133',
         'PORT': '3306',
     }
 }

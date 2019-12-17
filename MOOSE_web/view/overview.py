@@ -11,7 +11,7 @@ def overview(request):
     community = get_nav_list(uid)
     extra_info.update(community)
     cid = request.GET.get('cid')
-    oss_statistic = OsslibStatistic.objects.filter(community_id=int(cid))
+    oss_statistic = MOOSEStatistic.objects.filter(community_id=int(cid))
     count_line = 0
     count_file = 0
     count_commit = 0
@@ -21,9 +21,9 @@ def overview(request):
 
     oss_name = ''
     oss_score = ''
-    oss_list = OsslibCommunityList.objects.filter(community_id=int(cid))
+    oss_list = MOOSECommunityList.objects.filter(community_id=int(cid))
     oss_id_list = list(oss_list.values_list('oss_id', flat=True))
-    oss_meta_list = OsslibMeta.objects.filter(id__in=list(oss_list.values_list('meta_id', flat=True)))
+    oss_meta_list = MOOSEMeta.objects.filter(id__in=list(oss_list.values_list('meta_id', flat=True)))
     #获取语言数量和语言分布以及评分
     lanuage_merge = dict()
     if oss_meta_list:
@@ -45,7 +45,7 @@ def overview(request):
     bar_lanuage_arr = ''
     bar_lanuage_data = ''
     y = list(lanuage_merge_sort.keys())
-    for i in range(10):
+    for i in range(len(y)):
         key = y[i]
         bar_lanuage_arr += y[i] + ','
         bar_lanuage_data += str(lanuage_merge_sort.get(key)) + ','
@@ -65,7 +65,7 @@ def overview(request):
         core_pull_radio = (oss_statistic[0].core_pull_count/oss_statistic[0].pull_count)*100
         active_day_radio = (oss_statistic[0].active_days/oss_statistic[0].all_days)*100
     #获取情感分析
-    sentiment_yearmonth = OsslibStatisticSentiment.objects.filter(community_id=int(cid))
+    sentiment_yearmonth = MOOSEStatisticSentiment.objects.filter(community_id=int(cid))
     sentiment_date = ''
     sentiment_pos = ''
     sentiment_neg = ''

@@ -1,5 +1,5 @@
 """
-WSGI config for OSSlib_web project.
+WSGI config for MOOSE_web project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'OSSlib_web.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MOOSE_web.settings')
 
 application = get_wsgi_application()
