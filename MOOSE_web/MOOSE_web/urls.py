@@ -37,4 +37,6 @@ urlpatterns = [
     path('author/', author),
     path('monitor/', monitor),
     path('getIndex/', getIndex),
+    path('getMonitor/', getMonitor),
+    path('addtoindex/', addtoindex)
 ]

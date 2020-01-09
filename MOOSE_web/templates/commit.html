@@ -54,7 +54,14 @@
                     },
                     axisLine:{
                         lineStyle:{
-                            color:'#fff',		                            width:1,//这里是为了突出显示加上的		                        }
+                            color:'rgba(255,255,255,0.1)',
+                            width:1,//这里是为了突出显示加上的		                        }
+                        }
+                    },
+                    splitLine:{
+                        show:true,
+                        lineStyle:{
+                            color:'rgba(255,255,255,0.1)',
                         }
                     }
                 },
@@ -70,7 +77,14 @@
                     },
                     axisLine:{
                         lineStyle:{
-                            color:'#fff',		                            width:1,//这里是为了突出显示加上的		                        }
+                            color:'rgba(255,255,255,0.1)',
+                            width:1,//这里是为了突出显示加上的		                        }
+                        }
+                    },
+                    splitLine:{
+                        show:true,
+                        lineStyle:{
+                            color:'rgba(255,255,255,0.1)',
                         }
                     }
                 },
@@ -98,20 +112,26 @@
                     {
                         name:'new commit count',
                         type:'line',
-                        smooth:true,
+                        smooth:false,
                         symbol: 'none',
                         sampling: 'average',
                         itemStyle: {
-                            color: '#993333'
+                           normal: {
+                               lineStyle: {
+                                   color: 'rgba(255,255,255,0.8)',
+                                   width:3
+                               }
+                           }
                         },
-                        areaStyle: {
-                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                offset: 0,
-                                color: '#CC9966'
-                            }, {
-                                offset: 1,
-                                color: '#CC9966'
-                            }])
+                        areaStyle:{
+                            normal:{
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1,[{
+                                    offset: 0, color: 'rgba(255,255,255,1)' // 0% 处的颜色
+                                    }, {
+                                    offset: 1, color: 'rgba(255,255,255,0.7)' // 100% 处的颜色
+                                    }]
+                                ),  //背景渐变色
+                            }
                         },
                         data: data
                     }
@@ -160,7 +180,14 @@
                     },
                     axisLine:{
                         lineStyle:{
-                            color:'#fff',		                            width:1,//这里是为了突出显示加上的		                        }
+                            color:'rgba(255,255,255,0.1)',
+                            width:1,//这里是为了突出显示加上的		                        }
+                        }
+                    },
+                    splitLine:{
+                        show:true,
+                        lineStyle:{
+                            color:'rgba(255,255,255,0.1)',
                         }
                     }
                 },
@@ -176,7 +203,14 @@
                     },
                     axisLine:{
                         lineStyle:{
-                            color:'#fff',		                            width:1,//这里是为了突出显示加上的		                        }
+                            color:'rgba(255,255,255,0.1)',
+                            width:1,//这里是为了突出显示加上的		                        }
+                        }
+                    },
+                    splitLine:{
+                        show:true,
+                        lineStyle:{
+                            color:'rgba(255,255,255,0.1)',
                         }
                     }
                 },
@@ -204,40 +238,52 @@
                     {
                         name:'new issue count',
                         type:'line',
-                        smooth:true,
+                        smooth:false,
                         symbol: 'none',
                         sampling: 'average',
                         itemStyle: {
-                            color: 'rgb(255, 158, 68)'
+                           normal: {
+                               lineStyle: {
+                                   color: 'rgba(255,255,255,0.8)',
+                                   width:3
+                               }
+                           }
                         },
-                        areaStyle: {
-                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                offset: 0,
-                                color: '#CC9966'
-                            }, {
-                                offset: 1,
-                                color: '#CC9966'
-                            }])
+                        areaStyle:{
+                            normal:{
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1,[{
+                                    offset: 0, color: 'rgba(255,255,255,1)' // 0% 处的颜色
+                                    }, {
+                                    offset: 1, color: 'rgba(255,255,255,0.7)' // 100% 处的颜色
+                                    }]
+                                ),  //背景渐变色
+                            }
                         },
                         data: data
                     },
                     {
                         name:'close issue count',
                         type:'line',
-                        smooth:true,
+                        smooth:false,
                         symbol: 'none',
                         sampling: 'average',
                         itemStyle: {
-                            color: 'rgb(187,65,77)'
+                           normal: {
+                               lineStyle: {
+                                   color: '#3333ff',
+                                   width: 3
+                               }
+                           }
                         },
-                        areaStyle: {
-                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                offset: 0,
-                                color: '#CC9966'
-                            }, {
-                                offset: 1,
-                                color: '#CC9966'
-                            }])
+                        areaStyle:{
+                            normal:{
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1,[{
+                                    offset: 0, color: 'rgba(51,51,255,1)' // 0% 处的颜色
+                                    }, {
+                                    offset: 1, color: 'rgba(51,51,255,0.7)' // 100% 处的颜色
+                                    }]
+                                ),  //背景渐变色
+                            }
                         },
                         data: data_close
                     }
@@ -286,8 +332,14 @@
                     },
                     axisLine:{
                         lineStyle:{
-                            color:'#fff',
+                            color:'rgba(255,255,255,0.1)',
                             width:1,//这里是为了突出显示加上的		                        }
+                        }
+                    },
+                    splitLine:{
+                        show:true,
+                        lineStyle:{
+                            color:'rgba(255,255,255,0.1)',
                         }
                     }
                 },
@@ -303,8 +355,14 @@
                     },
                     axisLine:{
                         lineStyle:{
-                            color:'#fff',
+                            color:'rgba(255,255,255,0.1)',
                             width:1,//这里是为了突出显示加上的		                        }
+                        }
+                    },
+                    splitLine:{
+                        show:true,
+                        lineStyle:{
+                            color:'rgba(255,255,255,0.1)',
                         }
                     }
                 },
@@ -332,40 +390,52 @@
                     {
                         name:'new pull request count',
                         type:'line',
-                        smooth:true,
+                        smooth:false,
                         symbol: 'none',
                         sampling: 'average',
                         itemStyle: {
-                            color: 'rgb(255, 158, 68)'
+                           normal: {
+                               lineStyle: {
+                                   color: 'rgba(255,255,255,0.8)',
+                                   width:3
+                               }
+                           }
                         },
-                        areaStyle: {
-                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                offset: 0,
-                                color: '#CC9966'
-                            }, {
-                                offset: 1,
-                                color: '#CC9966'
-                            }])
+                        areaStyle:{
+                            normal:{
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1,[{
+                                    offset: 0, color: 'rgba(255,255,255,1)' // 0% 处的颜色
+                                    }, {
+                                    offset: 1, color: 'rgba(255,255,255,0.7)' // 100% 处的颜色
+                                    }]
+                                ),  //背景渐变色
+                            }
                         },
                         data: data
                     },
                     {
                         name:'merged pull request count',
                         type:'line',
-                        smooth:true,
+                        smooth:false,
                         symbol: 'none',
                         sampling: 'average',
                         itemStyle: {
-                            color: 'rgb(187,65,77)'
+                           normal: {
+                               lineStyle: {
+                                   color: '#3333ff',
+                                   width: 3
+                               }
+                           }
                         },
-                        areaStyle: {
-                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                offset: 0,
-                                color: '#CC9966'
-                            }, {
-                                offset: 1,
-                                color: '#CC9966'
-                            }])
+                        areaStyle:{
+                            normal:{
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1,[{
+                                    offset: 0, color: 'rgba(51,51,255,1)' // 0% 处的颜色
+                                    }, {
+                                    offset: 1, color: 'rgba(51,51,255,0.7)' // 100% 处的颜色
+                                    }]
+                                ),  //背景渐变色
+                            }
                         },
                         data: data_close
                     }
@@ -471,7 +541,7 @@
                             return idx * 5;
                         },
                         itemStyle: {
-                            color: '#CC9966'
+                            color: '#FFFFFF'
                         },
                     }]
                 };;
@@ -517,8 +587,14 @@
                     },
                     axisLine:{
                         lineStyle:{
-                            color:'#fff',
+                            color:'rgba(255,255,255,0.1)',
                             width:1,//这里是为了突出显示加上的		                        }
+                        }
+                    },
+                    splitLine:{
+                        show:true,
+                        lineStyle:{
+                            color:'rgba(255,255,255,0.1)',
                         }
                     }
                 },
@@ -534,8 +610,14 @@
                     },
                     axisLine:{
                         lineStyle:{
-                            color:'#fff',
+                            color:'rgba(255,255,255,0.1)',
                             width:1,//这里是为了突出显示加上的		                        }
+                        }
+                    },
+                    splitLine:{
+                        show:true,
+                        lineStyle:{
+                            color:'rgba(255,255,255,0.1)',
                         }
                     }
                 },
@@ -563,27 +645,32 @@
                     {
                         name:'new pull request count',
                         type:'line',
-                        smooth:true,
+                        smooth:false,
                         symbol: 'none',
                         sampling: 'average',
                         itemStyle: {
-                            color: 'rgb(255, 158, 68)'
+                           normal: {
+                               lineStyle: {
+                                   color: 'rgba(255,255,255,0.8)',
+                                   width:3
+                               }
+                           }
                         },
-                        areaStyle: {
-                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                offset: 0,
-                                color: '#CC9966'
-                            }, {
-                                offset: 1,
-                                color: '#CC9966'
-                            }])
+                        areaStyle:{
+                            normal:{
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1,[{
+                                    offset: 0, color: 'rgba(255,255,255,1)' // 0% 处的颜色
+                                    }, {
+                                    offset: 1, color: 'rgba(255,255,255,0.7)' // 100% 处的颜色
+                                    }]
+                                ),  //背景渐变色
+                            }
                         },
                         data: data
                     },
 
                 ]
             };
-            ;
             if (option && typeof option === "object") {
                 myChart.setOption(option, true);
             }

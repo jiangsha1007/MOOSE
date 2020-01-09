@@ -19,3 +19,10 @@ class MOOSECommunityList(models.Model):
     meta_id = models.IntegerField()
     class Meta:
         db_table = 'moose_community_list'
+
+class MOOSEIndexDisplay(models.Model):
+    community_id = models.IntegerField()
+    index_id = models.IntegerField()
+
+    class Meta:
+        db_table = 'moose_index_display'

@@ -10,19 +10,21 @@
         <link rel="stylesheet" href="{% static 'vendor/bower_components/animate.css/animate.min.css' %}">
         <link rel="stylesheet" href="{% static 'vendor/bower_components/jquery.scrollbar/jquery.scrollbar.css' %}">
         <link rel="stylesheet" href="{% static 'vendor/bower_components/fullcalendar/dist/fullcalendar.min.css' %}">
-        <!-- App styles -->
         <link rel="stylesheet" href="{% static 'css/app.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/my.css' %}">
+        <!-- App styles -->
+
         <link rel="stylesheet" href="{% static 'css/my.css' %}">
 
         <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
-        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
-        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
-        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
-        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
-        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
-        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
-        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
-        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+        <script type="text/javascript" src="{% static 'js/echarts/echarts.min.js'%}"></script>
+        <script type="text/javascript" src="{% static 'js/echarts/echarts-gl.min.js'%}"></script>
+        <script type="text/javascript" src="{% static 'js/echarts/ecStat.min.js'%}"></script>
+        <script type="text/javascript" src="{% static 'js/echarts/dataTool.min.js'%}"></script>
+        <script type="text/javascript" src="{% static 'js/echarts/china.js'%}"></script>
+        <script type="text/javascript" src="{% static 'js/echarts/world.js'%}"></script>
+        <script type="text/javascript" src="{% static 'js/echarts/bmap.min.js'%}"></script>
+        <script type="text/javascript" src="{% static 'js/csrf.js'%}"></script>
         {% block page_js %}
 
         {% endblock %}
@@ -375,11 +377,12 @@
                                 {% for per_community in community %}
                                     <a href=""><i class="zmdi zmdi-view-week"></i> {{ per_community.community_name }}</a>
                                     <ul>
-                                        <li class="navigation"><a href="../overview/?cid={{ per_community.id }}">overview</a></li>
-                                        <li class="navigation"><a href="../commit/?cid={{ per_community.id }}">activity</a></li>
-                                        <li class="navigation"><a href="../issue/?cid={{ per_community.id }}">issue</a></li>
-                                        <li class="navigation"><a href="../pull/?cid={{ per_community.id }}">pull request</a></li>
-                                        <li class="navigation"><a href="../author/?cid={{ per_community.id }}">developer</a></li>
+                                        <li class="navigation"><a href="../overview/?cid={{ per_community.id }}">Overview</a></li>
+                                        <li class="navigation"><a href="../commit/?cid={{ per_community.id }}">Activity</a></li>
+                                        <li class="navigation"><a href="../issue/?cid={{ per_community.id }}">Issue</a></li>
+                                        <li class="navigation"><a href="../pull/?cid={{ per_community.id }}">Pull Request</a></li>
+                                        <li class="navigation"><a href="../author/?cid={{ per_community.id }}">Developer</a></li>
+                                        <li class="navigation"><a href="../monitor/?cid={{ per_community.id }}">Index Monitor</a></li>
                                         <!--
                                         {% for per_community_list in community_list %}
                                         {% if per_community_list.community_id == per_community.id %}

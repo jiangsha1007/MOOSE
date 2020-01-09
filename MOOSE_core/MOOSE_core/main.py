@@ -41,7 +41,6 @@ if __name__ == '__main__':
     for per_software_community in osslib_community_list:
        eval(per_software_community.community_name)().get_oss_list(2)
     '''
-    CodeAnalysis().get_code()
     CodeAnalysis().code_analysis()
 
     #train()

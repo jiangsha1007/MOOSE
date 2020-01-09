@@ -8,12 +8,13 @@ def get_repo_by_git(loacal_path, git_url):
     #Repo.init(loacal_path)  # 创建一个git文件夹
     try:
         clone_repo = Repo.clone_from(git_url, loacal_path)
-        print ("cloning")
+        print("cloning")
         return 1
     except:
+        repo = git.Git('/data/test4')
         remote = git.repo.base.Repo(loacal_path).remote()# 从远程版本库拉取分支
         remote.pull('master') #后面跟需要拉取的分支名称
-        print ('updating')
+        print('updating')
         return -1
 
 def get_repo_by_svn(loacal_path, svn_url):

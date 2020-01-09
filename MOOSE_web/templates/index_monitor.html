@@ -1,0 +1,512 @@
+{% extends 'Base.html' %}
+{% load staticfiles %}
+
+{% block page_css %}
+    <link rel="stylesheet" href="{% static 'vendor/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bower_components/select2/dist/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bower_components/flatpickr/dist/flatpickr.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/app.min.css' %}">
+{% endblock %}
+{% block page_js %}
+    <script src="{% static 'vendor/bower_components/select2/dist/js/select2.full.min.js' %}"></script>
+    <script src="{% static 'vendor/bower_components/dropzone/dist/min/dropzone.min.js' %}"></script>
+    <script src="{% static 'vendor/bower_components/flatpickr/dist/flatpickr.min.js' %}"></script>
+
+{% endblock %}
+{% block content%}
+    <input type="hidden" id="cid" value="{{ cid }}">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Index and time select</h4>
+
+        <!--
+
+            <label class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">{{ per_index_name.index_name }}</span>
+            </label>-->
+
+            <div class="row">
+                <div class="col-sm-8 col-md-8">
+                    <div class="form-group">
+                        <label>Multiple</label>
+                        <select class="select2" multiple id="sel_index">
+                             {% for per_index_name in index_name %}
+                                <option value="{{ per_index_name.id }}">{{ per_index_name.index_display }}</option>
+                             {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <label>start time</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
+                        <div class="form-group">
+                            <input type="text" id="in_date_start" class="form-control date-picker" placeholder="Pick a date">
+                            <i class="form-group__bar"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <label>End time</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
+                        <div class="form-group">
+                            <input type="text" id="in_date_end" class="form-control date-picker" placeholder="Pick a date">
+                            <i class="form-group__bar"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row btn-demo">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <select class="select2">
+                            <option>day</option>
+                            <option>week</option>
+                            <option>month</option>
+                            <option>year</option>
+                        </select>
+                    </div>
+                </div>
+                <button style="height: 40px" id="btn_done" class="btn btn-light btn--icon-text"><i class="zmdi zmdi-check-all"></i> Done</button>
+                <button style="height: 40px;margin-left: 40px" class="btn btn-light btn--icon-text" data-toggle="modal" data-target="#modal-new-todo"><i class="zmdi zmdi-check-all"></i> Customize</button>
+                <div class="modal fade" id="modal-new-todo" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Custom formula</h5>
+                            </div>
+                            <div class="modal-body">
+                                <div class="todo__labels">
+                                    {% if index_name %}
+                                        {% for per_index_name in index_name_cal %}
+                                             <a  class="index_name_cal" cal_name="{{ per_index_name.cal_name }}">{{ per_index_name.index_name }}:{{ per_index_name.cal_name }}</a>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <a class="index_name_cal" cal_name="+">+</a>
+                                    <a class="index_name_cal" cal_name="-">-</a>
+                                    <a class="index_name_cal" cal_name="*">*</a>
+                                    <a class="index_name_cal" cal_name="**">**</a>
+                                    <a class="index_name_cal" cal_name="()">()</a>
+                                    <a class="index_name_cal" cal_name="(">(</a>
+                                    <a class="index_name_cal" cal_name=")">)</a>
+                                </div>
+                                <div class="form-group">
+                                    <textarea required id="cal_formula" class="form-control" rows="5" placeholder="Let us type some lorem ipsum...."></textarea>
+                                    <i class="form-group__bar"></i>
+                                </div>
+                                <div class="input-group">
+                                    <div class="form-group">
+                                        <input type="text" id="input_new_index_name" class="form-control" placeholder="Index Name" required>
+                                        <i class="form-group__bar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="cal__add" class="btn btn-link">Add</button>
+                                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="div_card">
+        <div class="card">
+            <div class="card-body" style="padding-right: 0px">
+                <h4 class="card-title">index monitor</h4>
+                <input type="hidden"  id="index_data" value="{{ index_data }}">
+                <input type="hidden"  id="index_date" value="{{ index_date }}">
+                <div id="container" style="height: 300px;margin-left: -60px;margin-right:-60px;margin-top: -50px"></div>
+            </div>
+        </div>
+    </div>
+    <!--<script type="text/javascript">
+
+                var app = {};
+                option = null;
+                var data = [];
+                var date = $('#index_date').val().split(',');
+                var data_1 = $('#index_data').val().split(',');
+                for (var i = 0; i < data_1.length; i++) {
+                    line_data = {
+                        name: date[i],
+                        value: [
+                            date[i],
+                            data_1[i]
+                        ]
+                    }
+                    data.push(line_data);
+                }
+
+
+
+                setInterval(function () {
+                    $.ajax({
+                        url:"../getIndex",
+                        async:false,
+                        success:function (json_data) {
+                            data = []
+                            var return_date = json_data.index_date.split(',');
+                            var return_data = json_data.index_data.split(',');
+                            for (var i = 0; i < return_data.length; i++) {
+                                    line_data = {
+                                        name: return_date[i],
+                                        value: [
+                                            return_date[i],
+                                            return_data[i]
+                                        ]
+                                    }
+                                    data.push(line_data);
+                                }
+                            if (data.length>20){
+                                 data.shift()
+                            }
+
+                        },
+                        error:function () {
+
+                        }
+                    }),
+                    myChart.setOption({
+                        series: [{
+                            data: data
+                        }]
+                    });
+                }, 1000);
+                if (option && typeof option === "object") {
+                    myChart.setOption(option, true);
+                }
+
+                $("#btn_done").click(function () {
+                    $.ajax({
+                        url: "../getIndex",
+                        async: false,
+                        success:function () {
+                            for(i=0;i<10;i++) {
+                                $(".card-body").append("<div id='container' style='height: 300px;margin-left: -60px;margin-right:-60px;margin-top: -50px'></div>")
+                            }
+                        }
+                    })
+                })
+             </script>-->
+    <script>
+        $.fn.extend({
+            insertAtCursor : function(myValue) {
+                var $t = $(this)[0];
+                if (document.selection) {
+                    this.focus();
+                    sel = document.selection.createRange();
+                    sel.text = myValue;
+                    this.focus();
+                } else if ($t.selectionStart || $t.selectionStart == '0') {
+                    var startPos = $t.selectionStart;
+                    var endPos = $t.selectionEnd;
+                    var scrollTop = $t.scrollTop;
+                    $t.value = $t.value.substring(0, startPos) + myValue + $t.value.substring(endPos, $t.value.length);
+                    this.focus();
+                    $t.selectionStart = startPos + myValue.length;
+                    $t.selectionEnd = startPos + myValue.length;
+                    $t.scrollTop = scrollTop;
+                } else {
+                    this.value += myValue;
+                    this.focus();
+                }
+            }
+        });
+        option = {
+            tooltip: {
+                axisPointer: {
+                    type: 'cross'
+                },
+                trigger: 'axis',
+            },
+            xAxis: {
+                type: 'time',
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#fff',
+                        fontSize:'12'
+                    },
+                    interval:0
+                },
+                axisLine:{
+                    lineStyle:{
+                        color:'rgba(255,255,255,0.1)',
+                        width:1,//这里是为了突出显示加上的		                        }
+                    }
+                },
+                splitLine:{
+                    show:true,
+                    lineStyle:{
+                        color:'rgba(255,255,255,0.1)',
+                    }
+                }
+            },
+            yAxis: {
+                type: 'value',
+                boundaryGap: [0, '30%'],
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#fff',
+                        fontSize:'12'
+                    }
+                },
+                axisLine:{
+                    lineStyle:{
+                        color:'rgba(255,255,255,0.1)',
+                        width:1,//这里是为了突出显示加上的		                        }
+                    }
+                },
+                splitLine:{
+                    show:true,
+                    lineStyle:{
+                        color:'rgba(255,255,255,0.1)',
+                    }
+                }
+            },
+            series: [{
+                name: 'count',
+                type: 'line',
+                showSymbol: true,
+                hoverAnimation: true,
+
+                areaStyle:{
+                    normal:{
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1,[{
+                            offset: 0, color: 'rgba(255,255,255,1)' // 0% 处的颜色
+                            }, {
+                            offset: 1, color: 'rgba(255,255,255,0.7)' // 100% 处的颜色
+                            }]
+                        ),  //背景渐变色
+                    }
+                },
+                itemStyle: {
+                   normal: {
+                       lineStyle: {
+                           color: 'rgba(255,255,255,0.8)',
+                           width:3
+                       }
+                   }
+                },
+                },{
+                    name: 'trend',
+                    type: 'line',
+                    showSymbol: true,
+                    hoverAnimation: true,
+
+                    /*areaStyle:{
+                        normal:{
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1,[{
+                                offset: 0, color: 'rgba(255,255,255,1)' // 0% 处的颜色
+                                }, {
+                                offset: 1, color: 'rgba(255,255,255,0.01)' // 100% 处的颜色
+                                }]
+                            ),  //背景渐变色
+                        }
+                    },*/
+                    areaStyle:{
+                        normal:{
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1,[{
+                                offset: 0, color: 'rgba(0,92,153,1)' // 0% 处的颜色
+                                }, {
+                                offset: 1, color: 'rgba(0,92,153,0.7)' // 100% 处的颜色
+                                }]
+                            ),  //背景渐变色
+                        }
+                    },
+                    itemStyle: {
+                       normal: {
+                           lineStyle: {
+                               color: '#005c99',
+                               width: 3
+                           }
+                       }
+                    },
+                }
+            ],
+            dataZoom: [{
+                    type: 'inside',
+                    start: 0,
+                    end: 100
+                }, {
+                    start: 0,
+                    end: 100,
+                    handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                    handleSize: '60%',
+                    handleStyle: {
+                        color: '#fff',
+                        shadowBlur: 3,
+                        shadowColor: 'rgba(0, 0, 0, 0.6)',
+                        shadowOffsetX: 2,
+                        shadowOffsetY: 2
+                    },
+                    textStyle:{
+                        color:'#fff',
+                    },
+                }],
+        };
+        $(".index_name_cal").click(function () {
+            $('#cal_formula').insertAtCursor($(this).attr('cal_name'))
+        });
+
+        $('#cal__add').click(function () {
+            var cid = $("#cid").val()
+            $.ajax({
+                url: '/addtoindex/',
+                type: 'POST',
+                data: {
+                    cal_formula:$('#cal_formula').val(),
+                    index_name:$('#input_new_index_name').val(),
+                    cid:cid,
+                },
+                success: function(data) {
+                   window.location.reload()
+                }
+                })
+        });
+        $("#btn_done").click(function () {
+            var id_arr = $("#sel_index").val();
+            var id_str = id_arr.join(',');
+            var cid = $("#cid").val();
+
+            var date_start = $("#in_date_start").val()
+            var date_end = $("#in_date_end").val()
+            $.ajax({
+                url: "../getMonitor/",
+                type: 'POST',
+                async: false,
+                data:{ids:id_str,cid:cid,date_start:date_start,date_end:date_end,csrfmiddlewaretoken:'{{ csrf_token }}'},
+                success:function (data2) {
+                    $("#div_card").empty()
+                    for(var i=0; i < data2.index_display_id.length; i++) {
+                        $("#div_card").append(
+                            "<div class=\"card\">\n" +
+                            "            <div class=\"card-body\" style=\"padding-right: 0px\">\n" +
+                            "                <h4 class=\"card-title\">" + data2.index_name[i] +" monitor</h4>\n" +
+                            "                <input type=\"hidden\"  id=\"index_data\" value=\"{{ index_data }}\">\n" +
+                            "                <input type=\"hidden\"  id=\"index_date\" value=\"{{ index_date }}\">\n" +
+                            "                <div id=\"container" +data2.index_display_id[i]+ "\" style=\"height: 300px;margin-left: -60px;margin-right:-60px;margin-top: -50px\"></div>\n" +
+                            "            </div>\n" +
+                            "</div>");
+                        data_line = [];
+                        data_line_pre = [];
+                        upper_limit = 0;
+                        if(data2.index_info !=null && data2.index_info.length>0){
+                            for(var j = 0; j<data2.index_info.length; j++){
+                                if(data2.index_info[j].index_id == data2.index_display_id[i]){
+                                    var return_date = data2.index_info[j].index_date.split(',');
+                                    var return_data = data2.index_info[j].index_data.split(',');
+                                    for (var m = 0; m < return_data.length-1; m++) {
+                                        line_data = {
+                                            name: return_date[m],
+                                            value: [
+                                                return_date[m],
+                                                return_data[m]
+                                            ]
+                                        };
+                                        data_line.push(line_data);
+                                    }
+
+                                    var return_date_pre = data2.index_info[j].index_date_pre.split(',');
+                                    var return_data_pre = data2.index_info[j].index_data_pre.split(',');
+                                    for (var m = 0; m < return_data_pre.length-1; m++) {
+                                        line_data_pre = {
+                                            name: return_date_pre[m],
+                                            value: [
+                                                return_date_pre[m],
+                                                return_data_pre[m]
+                                            ]
+                                        };
+                                        data_line_pre.push(line_data_pre);
+                                    }
+                                    upper_limit = data2.index_info[j].upper_limit;
+                                    lower_limit = data2.index_info[j].lower_limit;
+                                    break;
+                                }
+                            }
+                        }
+
+                        var dom = document.getElementById("container"+data2.index_display_id[i]);
+                        var myChart = echarts.init(dom);
+                        if (option && typeof option === "object") {
+                            myChart.setOption(option, true);
+                        }
+                        myChart.setOption({
+                            series: [
+                                {
+                                    type: 'line',
+                                    data: data_line,
+                                    markArea:{
+                                        data:[[
+                                            {
+                                                yAxis: upper_limit,
+                                                name:'Abnormal area',
+                                            },{
+                                                yAxis:5000
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                yAxis:0
+                                            },
+                                            {
+                                                yAxis: lower_limit,
+                                                name:'Abnormal area',
+                                            }
+                                        ]]
+                                    },
+                                    markLine: {
+                                        data: [
+                                            {
+                                                yAxis: upper_limit,
+                                                name:'Abnormal area',
+                                                itemStyle: {
+                                                    normal: {
+                                                        color: '#ff3300',
+                                                        width: 3,
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                yAxis: lower_limit,
+                                                name:'Abnormal area',
+                                                itemStyle: {
+                                                    normal: {
+                                                        color: '#ff3300',
+                                                        width: 3,
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                type: 'average',
+                                                name: '平均值',
+                                                itemStyle: {
+                                                    normal: {
+                                                        color: '#ffff00',
+                                                        width: 3
+                                                    }
+                                                }
+                                            },
+                                        ]
+                                    },
+                                },{
+                                    type:'line',
+                                    data: data_line_pre
+                                }
+                            ]
+                        });/*
+                       if (option && typeof option === "object") {
+                            myChart.setOption(option, true);
+                        }*/
+                    }
+                }
+            })
+        })
+    </script>
+{% endblock %}

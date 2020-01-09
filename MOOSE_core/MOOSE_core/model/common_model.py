@@ -14,8 +14,8 @@ class MOOSECommunityApi(SQLObject):
 
 
 class MOOSEMetadata(SQLObject):
-    oss_id = IntCol(length = 50)
-    oss_from = IntCol(length = 11)
+    oss_id = IntCol(length=50)
+    oss_from = IntCol(length=11)
     oss_name = StringCol(length = 50)
     oss_fullname = StringCol(length = 100, unique = True)
     oss_create_time = StringCol(length = 50)
@@ -36,6 +36,7 @@ class MOOSEMetadata(SQLObject):
     oss_star = IntCol(length=11)
     oss_fork = IntCol(length=11)
     oss_main_language = StringCol(length = 50)
+    oss_language_count = IntCol(length=11)
     oss_owner_id = IntCol(length = 11)
     oss_owner_type = StringCol(length = 11)
     oss_size = IntCol(length = 11)
@@ -152,10 +153,10 @@ class MOOSEAuthorYear(SQLObject):
 
 
 class MOOSEDomain(SQLObject):
-    domain = StringCol(length = 255)
-    commits = IntCol(length = 11)
+    domain = StringCol(length=255)
+    commits = IntCol(length=11)
     commits_frac = StringCol(length=255)
-    oss_id = IntCol(length = 11)
+    oss_id = IntCol(length=11)
 
 
 class MOOSEFileDateCount(SQLObject):
@@ -171,7 +172,7 @@ class MOOSEFileExtension(SQLObject):
     filesdividelines = IntCol(length = 11)
     oss_id = IntCol(length = 11)
  
-class OsslibLineDateCount(SQLObject):
+class MOOSELineDateCount(SQLObject):
     date = StringCol(length = 255)
     line = IntCol(length = 11)
     oss_id = IntCol(length = 11)
@@ -229,6 +230,8 @@ class MOOSEStatistic(SQLObject):
     pull_review_count = IntCol(length=11)
     pull_review_comment_count = IntCol(length=11)
     core_pull_count = IntCol(length=11)
+    core_review_count = IntCol(length=11)
+    core_review_comment_count = IntCol(length=11)
     pull_merged_time = FloatCol()
     core_developer_count = IntCol(length=11)
     fork_count = IntCol(length=11)
@@ -236,7 +239,10 @@ class MOOSEStatistic(SQLObject):
     core_developer_change = FloatCol()
     pull_change = FloatCol()
     issue_change = FloatCol()
-
+    commit_count = IntCol(length=11)
+    commit_comment_count = IntCol(length=11)
+    core_commit_comment_count = IntCol(length=11)
+    core_issue_comment_count = IntCol(length=11)
 
 class MOOSEIssue(SQLObject):
     issue_user_type = StringCol(length=100)

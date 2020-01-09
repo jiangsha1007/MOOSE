@@ -57,8 +57,8 @@
                         <th>Company</th>
                     </tr>
                 </thead>
-                {% if osslib_auth %}
-                {% for key,value in osslib_auth.items %}
+                {% if MOOSE_auth %}
+                {% for key,value in MOOSE_auth.items %}
                     <thead  class="thead-default">
                     <tr>
                         <th colspan="10">{{ key }}</th>

@@ -52,7 +52,7 @@ class MOOSEMeta(models.Model):
 class MOOSEIssue(models.Model):
     issue_user_type = models.IntegerField()
     issue_state = models.IntegerField()
-    oss = models.ForeignKey(to='MOOSEMeta',to_field='oss_id',on_delete='models.CASCADE')
+    oss = models.ForeignKey(to='MOOSEMeta', to_field='oss_id',on_delete='models.CASCADE')
     user_id = models.BigIntegerField()
     issue_close_time = models.CharField(max_length=100)
     issue_create_time = models.CharField(max_length=100)
@@ -129,7 +129,11 @@ class MOOSEStatistic(models.Model):
     language_count = models.IntegerField()
     all_days = models.IntegerField()
     active_days = models.IntegerField()
-
+    core_issue_comment_count = models.IntegerField()
+    core_commit_comment_count = models.IntegerField()
+    core_review_comment_count = models.IntegerField()
+    core_review_count = models.IntegerField()
+    commit_comment_count = models.IntegerField()
     class Meta:
         db_table = 'moose_statistic'
         ordering = ['-update_time']
@@ -273,6 +277,27 @@ class MOOSETag(models.Model):
     class Meta:
         db_table = 'moose_topic'
         ordering = ['oss_id']
+
+
+class MOOSEIndex(models.Model):
+    index_name = models.CharField(max_length=200)
+    index_display = models.CharField(max_length=200)
+    cal_name = models.CharField(max_length=200)
+    cal_need = models.IntegerField()
+    community_id = models.IntegerField()
+
+    class Meta:
+        db_table = 'moose_index'
+        ordering = ['id']
+
+
+class MOOSEIndexFormula(models.Model):
+    index = models.ForeignKey(to='MOOSEIndex', to_field='id', on_delete='models.CASCADE')
+    cal_formula = models.CharField(max_length=500)
+
+    class Meta:
+        db_table = 'moose_index_formula'
+        ordering = ['id']
 
 
 

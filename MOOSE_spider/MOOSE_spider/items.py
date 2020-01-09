@@ -115,7 +115,7 @@ class MOOSECommit(scrapy.Item):
     commit_node_id = scrapy.Field()
 
 
-class OsslibDeveloper(scrapy.Item):
+class MOOSEDeveloper(scrapy.Item):
     oss_id = scrapy.Field()                 #关联repo_id
     user_id = scrapy.Field()                  #关联组织用户id
     user_commit_count = scrapy.Field()                        #用户commit数量

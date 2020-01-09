@@ -35,7 +35,10 @@ def addtolist(request):
     except:
         pass
     oss_meta_item = MOOSEMeta()
-    oss_meta_item.oss_fullname = repo_data['full_name']
+    try:
+        oss_meta_item.oss_fullname = repo_data['full_name']
+    except:
+        oss_meta_item.oss_fullname = ''
     oss_meta_item.oss_name = repo_data['name']
     oss_meta_item.oss_id = repo_data['id']
     oss_meta_item.oss_description = repo_data['description']

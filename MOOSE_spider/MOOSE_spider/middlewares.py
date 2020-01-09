@@ -47,7 +47,7 @@ class MyUserAgentMiddleware(UserAgentMiddleware):
         agent = random.choice(headers)
         request.headers.update(agent)
 
-class OsslibSpiderSpiderMiddleware(object):
+class MOOSESpiderSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the
     # passed objects.
@@ -95,7 +95,7 @@ class OsslibSpiderSpiderMiddleware(object):
         spider.logger.info('Spider opened: %s' % spider.name)
 
 
-class OsslibSpiderDownloaderMiddleware(object):
+class MOOSESpiderDownloaderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the downloader middleware does not modify the
     # passed objects.
