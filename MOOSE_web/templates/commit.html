@@ -1,25 +1,10 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
 {% block page_js %}
-    <script src="{% static 'vendor/bower_components/select2/dist/js/select2.full.min.js' %}"></script>
-    <script src="{% static 'vendor/bower_components/flot/jquery.flot.js' %}"></script>
-    <script src="{% static 'vendor/bower_components/flot/jquery.flot.pie.js' %}"></script>
-    <script src="{% static 'vendor/bower_components/flot/jquery.flot.resize.js' %}"></script>
-    <script src="{% static 'vendor/bower_components/flot.curvedlines/curvedLines.js' %}"></script>
-    <script src="{% static 'vendor/bower_components/flot.orderbars/js/jquery.flot.orderBars.js' %}"></script>
-    <script src="{% static 'js/jquery.flot.time.js' %}"></script>
-    <script src="{% static 'demo/js/flot-charts/curved-line.js' %}"></script>
-    <script src="{% static 'demo/js/flot-charts/line.js' %}"></script>
-    <script src="{% static 'demo/js/flot-charts/chart-tooltips.js' %}"></script>
-
 {% endblock %}
 {% block page_css %}
-    <link rel="stylesheet" href="{% static 'vendor/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css' %}">
-    <link rel="stylesheet" href="{% static 'vendor/bower_components/animate.css/animate.min.css' %}">
-    <link rel="stylesheet" href="{% static 'vendor/bower_components/select2/dist/css/select2.min.css' %}">
 {% endblock %}
 {% block content%}
-
     <div class="card">
         <div class="card-body" style="padding-right: 0px">
             <h4 class="card-title">Commit Number</h4>
@@ -448,7 +433,6 @@
              </script>
         </div>
     </div>
-
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">commit by hour of day</h4>
@@ -551,13 +535,12 @@
             </script>
         </div>
     </div>
-
     <div class="col-lg-6">
         <div class="card">
             <div class="card-body" style="padding-right: 0px">
-            <h4 class="card-title">Developer Number</h4>
-             <input type="hidden"  id="line_developer_data" value="{{ line_developer_data }}">
-            <input type="hidden"  id="line_developer_arr" value="{{ line_developer_arr }}">
+                <h4 class="card-title">Developer Number</h4>
+                 <input type="hidden"  id="line_developer_data" value="{{ line_developer_data }}">
+                <input type="hidden"  id="line_developer_arr" value="{{ line_developer_arr }}">
 
             <div id="container_developer" style="height: 300px;margin-left: -60px;margin-right:-60px;margin-top: -50px"></div>
              <script type="text/javascript">
@@ -677,4 +660,8 @@
              </script>
         </div>
     </div>
+    </div>
+{% endblock %}
+{% block page_js %}
+    <script src="{% static 'js/appjs/commit.js' %}"></script>
 {% endblock %}
