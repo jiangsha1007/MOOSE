@@ -20,6 +20,7 @@ from view.addoss import *
 from view.overview import *
 from view.new import *
 from view.info import *
+from view.baseview import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,5 +39,8 @@ urlpatterns = [
     path('monitor/', monitor),
     path('getIndex/', getIndex),
     path('getMonitor/', getMonitor),
-    path('addtoindex/', addtoindex)
+    path('addtoindex/', addtoindex),
+    path('websocketLink/',
+
+         websocketLink)# webSocket 链接
 ]

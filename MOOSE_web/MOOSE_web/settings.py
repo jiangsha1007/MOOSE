@@ -37,12 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'MOOSE_web',
     'model',
     'influxdb_metrics'
 
 ]
-INFLUXDB_HOST = "192.168.3.117"
+INFLUXDB_HOST = "192.168.3.14"
 INFLUXDB_PORT = 8086
 INFLUXDB_USER = "moose"
 INFLUXDB_PASSWORD = "moose"
@@ -50,7 +51,9 @@ INFLUXDB_DATABASE = "moose"
 INFLUXDB_TIMEOUT = 5
 INFLUXDB_TAGS_HOST = 'moose'
 
-
+import dwebsocket
+MIDDLEWARE_CLASSES = ['dwebsocket.middleware.WebSocketMiddleware']
+WEBSOCKET_ACCEPT_ALL = True  # 可以允许每一个单独的视图实用websockets
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

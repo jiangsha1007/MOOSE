@@ -10,13 +10,12 @@
         <link rel="stylesheet" href="{% static 'vendor/bower_components/animate.css/animate.min.css' %}">
         <link rel="stylesheet" href="{% static 'vendor/bower_components/jquery.scrollbar/jquery.scrollbar.css' %}">
         <link rel="stylesheet" href="{% static 'vendor/bower_components/fullcalendar/dist/fullcalendar.min.css' %}">
+        <link rel="stylesheet" href="{% static 'vendor/bower_components/select2/dist/css/select2.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/app.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/my.css' %}">
         <!-- App styles -->
 
-        <link rel="stylesheet" href="{% static 'css/my.css' %}">
-
-        <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+        <script src="{% static 'js/jquery-1.10.2.js'%}"></script>
         <script type="text/javascript" src="{% static 'js/echarts/echarts.min.js'%}"></script>
         <script type="text/javascript" src="{% static 'js/echarts/echarts-gl.min.js'%}"></script>
         <script type="text/javascript" src="{% static 'js/echarts/ecStat.min.js'%}"></script>
@@ -25,6 +24,8 @@
         <script type="text/javascript" src="{% static 'js/echarts/world.js'%}"></script>
         <script type="text/javascript" src="{% static 'js/echarts/bmap.min.js'%}"></script>
         <script type="text/javascript" src="{% static 'js/csrf.js'%}"></script>
+        <script src="{% static 'vendor/bower_components/select2/dist/js/select2.full.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/socket.js' %}"></script>
         {% block page_js %}
 
         {% endblock %}
