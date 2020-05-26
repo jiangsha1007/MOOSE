@@ -12,7 +12,7 @@ import base64
 def new(request):
     extra_info = dict()
     uid = request.session['user_id']
-    community = get_nav_list(uid)
+    community = get_nav_list(uid,0)
     extra_info.update(community)
     oss_meta_list = MOOSEMeta.objects.filter(uid=uid, status=1)
     oss_mata = dict()
@@ -29,17 +29,24 @@ def addtolist(request):
     oss_platform_api = MOOSEPlatform.objects.get(id=platform_id)
     if oss_platform_api:
         get_single_api = oss_platform_api.get_oss_single_api
+        access_token = oss_platform_api.access_token
     repo_url = get_single_api + repo_name
+    if platform_id == '2':
+        repo_url += "?access_token="+access_token
     try:
         repo_data = get_html_json(repo_url, getHeader())[0]
     except:
         pass
     oss_meta_item = MOOSEMeta()
+    oss_meta_item.oss_from = platform_id
     try:
         oss_meta_item.oss_fullname = repo_data['full_name']
     except:
         oss_meta_item.oss_fullname = ''
-    oss_meta_item.oss_name = repo_data['name']
+    if platform_id == '2':
+        oss_meta_item.oss_name = repo_data['namespace']['path']
+    else:
+        oss_meta_item.oss_name = repo_data['name']
     oss_meta_item.oss_id = repo_data['id']
     oss_meta_item.oss_description = repo_data['description']
     try:
@@ -63,10 +70,12 @@ def addtolist(request):
     except BaseException as ex:
         oss_meta_item.oss_star = 0
     try:
-        oss_meta_item.oss_fork = repo_data['forks']
+        if platform_id == '2':
+            oss_meta_item.oss_fork = repo_data['forks_count']
+        else:
+            oss_meta_item.oss_fork = repo_data['forks']
     except BaseException as ex:
         oss_meta_item.oss_fork = 0
-
     try:
         oss_meta_item.oss_main_language = repo_data['language']
     except BaseException as ex:
@@ -76,7 +85,10 @@ def addtolist(request):
     except BaseException as e:
         oss_meta_item.oss_homepage = ''
     try:
-        oss_meta_item.oss_license = repo_data['license']['name']
+        if platform_id == '2':
+            oss_meta_item.oss_license = repo_data['license']
+        else:
+            oss_meta_item.oss_license = repo_data['license']['name']
     except BaseException as e:
         oss_meta_item.oss_license = ''
     try:
@@ -98,6 +110,8 @@ def addtolist(request):
             oss_meta_item.readme = str(base64.b64decode(readme), encoding="utf-8").replace('\r', '').replace('\n','')
         except:
             oss_meta_item.readme = ''
+    else:
+        oss_meta_item.readme = ''
     oss_meta_item.uid = uid
     oss_meta_item.status = 1
     oss_meta_item.save()
@@ -119,6 +133,7 @@ def addtomonitor(request):
             oss_community_list.oss_name = per_oss_meta.oss_fullname
             oss_community_list.oss_id = per_oss_meta.oss_id
             oss_community_list.meta_id = per_oss_meta.id
+            oss_community_list.platform = per_oss_meta.oss_from
             oss_community_list.save()
             oss_meta_list.update(status=2)
     return HttpResponse('1', content_type='application/text')

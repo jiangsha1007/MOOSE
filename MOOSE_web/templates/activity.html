@@ -1,0 +1,157 @@
+{% extends 'Base.html' %}
+{% load staticfiles %}
+
+{% block page_css %}
+{% endblock %}
+{% block content%}
+    <div class="card">
+        <div class="card-body" style="padding-right: 0px">
+            <h4 class="card-title">Commit Number</h4>
+             <input type="hidden"  id="line_commit_data" value="{{ line_commit_data }}">
+            <input type="hidden"  id="line_commit_arr" value="{{ line_commit_arr }}">
+            <div id="container_commit" style="height: 300px;margin-left: -100px;margin-right:-100px;margin-top: -50px"></div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body" style="padding-right: 0px">
+            <h4 class="card-title">Issue Number</h4>
+             <input type="hidden"  id="line_issue_data" value="{{ line_issue_data }}">
+            <input type="hidden"  id="line_issue_arr" value="{{ line_issue_arr }}">
+             <input type="hidden"  id="line_issue_close_data" value="{{ line_issue_close_data }}">
+
+            <div id="container_issue" style="height: 300px;margin-left: -100px;margin-right:-100px;margin-top: -50px"></div>
+             <script type="text/javascript">
+
+             </script>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body" style="padding-right: 0px">
+            <h4 class="card-title">Pull Request Number</h4>
+             <input type="hidden"  id="line_pull_data" value="{{ line_pull_data }}">
+            <input type="hidden"  id="line_pull_arr" value="{{ line_pull_arr }}">
+             <input type="hidden"  id="line_pull_close_data" value="{{ line_pull_merged_data }}">
+
+            <div id="container_pull" style="height: 300px;margin-left: -100px;margin-right:-100px;margin-top: -50px"></div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">commit by hour of day</h4>
+            <div id="container_hour" style="height: 500px;margin-left: -60px;margin-right:-60px;margin-top: -50px"></div>
+            <input type="hidden"  id="commit_hourday" value="{{ commit_hourday }}">
+
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body" style="padding-right: 0px">
+                <h4 class="card-title">Developer Number</h4>
+                 <input type="hidden"  id="line_developer_data" value="{{ line_developer_data }}">
+                <input type="hidden"  id="line_developer_arr" value="{{ line_developer_arr }}">
+
+            <div id="container_developer" style="height: 300px;margin-left: -60px;margin-right:-60px;margin-top: -50px"></div>
+             <script type="text/javascript">
+             var dom = document.getElementById("container_developer");
+            var myChart = echarts.init(dom,"shine");
+            var app = {};
+            option = null;
+            var date = $('#line_developer_arr').val().split(',');
+            var data = $('#line_developer_data').val().split(',');
+            option = {
+                tooltip: {
+                    trigger: 'axis',
+                    position: function (pt) {
+                        return [pt[0], '10%'];
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: date,
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff',
+                            fontSize:'12'
+                        }
+                    },
+                    axisLine:{
+                        lineStyle:{
+                            color:'rgba(255,255,255,0.1)',
+                            width:1,//这里是为了突出显示加上的		                        }
+                        }
+                    },
+                    splitLine:{
+                        show:true,
+                        lineStyle:{
+                            color:'rgba(255,255,255,0.1)',
+                        }
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    boundaryGap: [0, '10%'],
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff',
+                            fontSize:'12'
+                        }
+                    },
+                    axisLine:{
+                        lineStyle:{
+                            color:'rgba(255,255,255,0.1)',
+                            width:1,//这里是为了突出显示加上的		                        }
+                        }
+                    },
+                    splitLine:{
+                        show:true,
+                        lineStyle:{
+                            color:'rgba(255,255,255,0.1)',
+                        }
+                    }
+                },
+                dataZoom: [{
+                    type: 'inside',
+                    start: 0,
+                    end: 100
+                }, {
+                    start: 0,
+                    end: 100,
+                    handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                    handleSize: '80%',
+                    handleStyle: {
+                        color: '#fff',
+                        shadowBlur: 3,
+                        shadowColor: 'rgba(0, 0, 0, 0.6)',
+                        shadowOffsetX: 2,
+                        shadowOffsetY: 2
+                    },
+                    textStyle:{
+                        color:'#fff',
+                    },
+                }],
+                series: [
+                    {
+                        name:'new pull request count',
+                        type:'line',
+                        smooth:false,
+                        symbol: 'none',
+                        sampling: 'average',
+                        data: data
+                    },
+
+                ]
+            };
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+             </script>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+{% block page_js %}
+    <script src="{% static 'js/appjs/trend.js' %}"></script>
+{% endblock %}

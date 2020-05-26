@@ -1,0 +1,156 @@
+{% extends 'Base.html' %}
+{% load staticfiles %}
+
+{% block page_css %}
+    <style>
+    #modal-body{
+        height:600px;
+        overflow-y:scroll;
+        scrollbar-track-color: transparent;
+        scrollbar-highlight-color: #0099dd;
+        scrollbar-base-color: #0099dd;
+    }
+    #modal-body::-webkit-scrollbar {
+        /*滚动条整体样式*/
+        width : 10px;  /*高宽分别对应横竖滚动条的尺寸*/
+        height: 1px;
+        }
+    #modal-body::-webkit-scrollbar-thumb {
+        /*滚动条里面小方块*/
+        border-radius: 10px;
+        box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+        background   : #535353;
+        }
+    #modal-body::-webkit-scrollbar-track {
+        /*滚动条里面轨道*/
+        box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        background   : transparent;
+        }
+
+    </style>
+{% endblock %}
+{% block content%}
+    <div class="card">
+        <div class="toolbar toolbar--inner">
+                <div class="toolbar__label">Sentiment</div>
+        </div>
+        <div class="card-body">
+                <div id="container_sentiment" style="height: 500px;margin-left: -100px;margin-right:-100px;margin-top: -20px"></div>
+                <input type="hidden"  id="sentiment_date" value="{{ sentiment_date }}">
+                <input type="hidden"  id="sentiment_pos" value="{{ sentiment_pos }}">
+                <input type="hidden"  id="sentiment_neg" value="{{ sentiment_neg }}">
+                <input type="hidden"  id="sentiment_neu" value="{{ sentiment_neu }}">
+                <input type="hidden"  id="sentiment_agv" value="{{ sentiment_agv }}">
+                <script type="text/javascript">
+                </script>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body" style="padding-right: 0px">
+            <h4 class="card-title">Sentiment(Debate)</h4>
+            <input type="hidden"  id="sentiment_type_date" value="{{ sentiment_type_date }}">
+            <input type="hidden"  id="sentiment_type_debate" value="{{ sentiment_type_debate }}">
+            <input type="hidden"  id="sentiment_type_comment_id" value="{{ sentiment_type_comment_id }}">
+            <div id="container_sentiment_debate" style="height: 300px;margin-left: -100px;margin-right:-100px;margin-top: -50px"></div>
+            <script type="text/javascript">
+            </script>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body" style="padding-right: 0px">
+            <h4 class="card-title">Sentiment(Bug)</h4>
+            <input type="hidden"  id="sentiment_type_bug" value="{{ sentiment_type_bug }}">
+            <div id="container_sentiment_bug" style="height: 300px;margin-left: -100px;margin-right:-100px;margin-top: -50px"></div>
+            <script type="text/javascript">
+            </script>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body" style="padding-right: 0px">
+            <h4 class="card-title">Sentiment(Confuse)</h4>
+            <input type="hidden"  id="sentiment_type_confuse" value="{{ sentiment_type_confuse }}">
+            <div id="container_sentiment_confuse" style="height: 300px;margin-left: -100px;margin-right:-100px;margin-top: -50px"></div>
+            <script type="text/javascript">
+            </script>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body" style="padding-right: 0px">
+            <h4 class="card-title">Sentiment(Apologize)</h4>
+            <input type="hidden"  id="sentiment_type_date" value="{{ sentiment_type_date }}">
+            <input type="hidden"  id="sentiment_type_apologize" value="{{ sentiment_type_apologize }}">
+            <div id="container_sentiment_apologize" style="height: 300px;margin-left: -100px;margin-right:-100px;margin-top: -50px"></div>
+            <script type="text/javascript">
+            </script>
+        </div>
+    </div>
+
+     <div class="card">
+        <div class="card-body" style="padding-right: 0px">
+            <h4 class="card-title">Sentiment(Third Party)</h4>
+            <input type="hidden"  id="sentiment_type_third_party" value="{{ sentiment_type_third_party }}">
+            <div id="container_sentiment_third_party" style="height: 300px;margin-left: -100px;margin-right:-100px;margin-top: -50px"></div>
+            <script type="text/javascript">
+            </script>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body" style="padding-right: 0px">
+            <h4 class="card-title">Sentiment(Doc Standard)</h4>
+            <input type="hidden"  id="sentiment_type_doc_standard" value="{{ sentiment_type_doc_standard }}">
+            <div id="container_sentiment_doc_standard" style="height: 300px;margin-left: -100px;margin-right:-100px;margin-top: -50px"></div>
+            <script type="text/javascript">
+            </script>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body" style="padding-right: 0px">
+            <h4 class="card-title">Sentiment(Work)</h4>
+            <input type="hidden"  id="sentiment_type_work" value="{{ sentiment_type_work }}">
+            <div id="container_sentiment_work" style="height: 300px;margin-left: -100px;margin-right:-100px;margin-top: -50px"></div>
+            <script type="text/javascript">
+            </script>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-comment" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Comment List</h5>
+                </div>
+                <div class="modal-body" id="modal-body" >
+                    <section class="content" style="width: 100%;padding: 0px">
+                        <div id="comment_list_body" class="content__inner" style="width: 100%">
+                            <header class="content__title">
+                                <h1>
+                                    debate:<span id="dabate_count" style="color: #ff0000"></span>&nbsp;
+                                    bug:<span id="bug_count" style="color: #ff0000"></span>&nbsp;
+                                    confuse:<span id="confuse_count" style="color: #ff0000"></span>&nbsp;
+                                    apologize:<span id="apologize_count" style="color: #ff0000"></span>&nbsp;
+                                    third party:<span id="third_party_count" style="color: #ff0000"></span>&nbsp;
+                                    doc standard:<span id="doc_standard_count" style="color: #ff0000"></span>&nbsp;
+                                    work:<span id="work_count" style="color: #ff0000"></span>&nbsp;
+
+                                </h1>
+                            </header>
+                        </div>
+                    </section>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block page_js %}
+    <script src="{% static 'js/appjs/sentiment.js' %}"></script>
+{% endblock %}

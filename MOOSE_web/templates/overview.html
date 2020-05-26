@@ -1,26 +1,18 @@
-{% extends 'base.html' %}
+{% extends 'Base.html' %}
 {% load staticfiles %}
 
 {% block page_css %}
 {% endblock %}
 {% block content%}
 <div class="toolbar">
-    <div class="toolbar__label"><span class="hidden-xs-down">Total</span> 35 Notes</div>
+    <div class="toolbar__label"><span class="hidden-xs-down">{{ current_community_name }}</span></div>
     <div class="actions">
         update time <h5 id="moose_updatetime">{{ moose_time }}</h5>
     </div>
 </div>
+    <input type="hidden" id="cid" value="{{ cid }}">
 <div class="row quick-stats">
-    <div class="col-sm-6 col-md-3">
-        <div class="quick-stats__item">
-            <div class="quick-stats__info">
-                <h2>Line Number</h2>
-                <small>Total lines</small>
-            </div>
-            <div class="quick-stats__chart peity-bar" style="padding-left: 30px"><h1 id="moose_loc">{{ oss_statistic.loc }}</h1></div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-md-3">
+    <div class="col-sm-6 col-md-4">
         <div class="quick-stats__item">
             <div class="quick-stats__info">
                 <h2>File Number</h2>
@@ -31,7 +23,7 @@
         </div>
     </div>
 
-    <div class="col-sm-6 col-md-3">
+    <div class="col-sm-6 col-md-4">
         <div class="quick-stats__item">
             <div class="quick-stats__info">
                 <h2>Deveploper Number</h2>
@@ -42,7 +34,7 @@
         </div>
     </div>
 
-    <div class="col-sm-6 col-md-3">
+    <div class="col-sm-6 col-md-4">
         <div class="quick-stats__item">
             <div class="quick-stats__info">
                 <h2>Commit Number</h2>
@@ -63,11 +55,11 @@
             <div class="progress-value">63.4</div>
         </div>
     </div>
-    <div class="listview listview--bordered q-a" style="float:left">
-        <div class="q-a__stat hidden-sm-down" style="float:left;width: 40%;height: 100%">
+    <div class="row">
+        <div class="col-lg-6">
             <div id="container_score" style="height: 100%;width: 100%;margin-top: -100px;padding-left: 30px"></div>
         </div>
-        <div class="listview__content" style="float:left;width: 50%">
+        <div class="col-lg-6">
             <div class="table-responsive">
                 <table class="table mb-3">
                     <thead class="thead-inverse">
@@ -142,11 +134,6 @@
             {% for per_oss_list in oss_list %}
                 <div class="listview__item q-a__item">
                     <div class="q-a__stat hidden-sm-down">
-                        <span>
-                            <strong>{{ per_oss_list.oss_line_count }}</strong>
-                            <small>Lines</small>
-                        </span>
-
                         <span>
                             <strong>{{ per_oss_list.oss_file_count }}</strong>
                             <small>Files</small>
@@ -350,14 +337,36 @@
     </div>
     <div class="col-lg-6">
         <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">WordCloud</h4>
-                <div >
-                    <img style="width:100%;height: 100%" src="{% static 'img/ciyun.png' %}">
-                </div>
+            <div class="card-body" style="padding-right: 0px">
+                <h4 class="card-title">Popularity</h4>
+                <input type="hidden" id="line_pop_data" value="{{ line_pop_data }}">
+                <input type="hidden" id="line_fork_data" value="{{ line_fork_data }}">
+                <input type="hidden" id="line_pop_arr" value="{{ line_pop_arr }}">
+                <input type="hidden" id="line_star_data" value="{{ line_star_data }}">
+
+                <div id="container_pop" style="height: 480px;margin-left: -60px;margin-right:-60px;margin-top: -50px"></div>
             </div>
         </div>
     </div>
+</div>
+<div class="card">
+    <div class="toolbar toolbar--inner">
+            <div class="toolbar__label">Wordcloud</div>
+    </div>
+    <div class="card-body">
+        <img style="width:100%;" src="{% static 'img/ciyun.png' %}">
+    </div>
+</div>
+<div class="card">
+    <div class="toolbar toolbar--inner">
+            <div class="toolbar__label">Developer Net</div>
+            <input type="hidden" id="net_categories" value="{{ categories }}">
+            <input type="hidden"  id="net_nodes" value="{{ nodes }}">
+            <input type="hidden" id="net_links" value="{{ links }}">
+    </div>
+    <div class="card-body">
+            <div id="container_net" style="height: 500px;margin-left: -100px;margin-right:-100px;margin-top: -20px"></div>
+        </div>
 </div>
 <div class="card">
     <div class="toolbar toolbar--inner">
@@ -372,22 +381,6 @@
             {% endif %}
         </div>
     </div>
-</div>
-<div class="card">
-    <div class="toolbar toolbar--inner">
-            <div class="toolbar__label">Sentiment</div>
-    </div>
-    <div class="card-body">
-            <div id="container_sentiment" style="height: 500px;margin-left: -100px;margin-right:-100px;margin-top: -20px"></div>
-            <input type="hidden"  id="sentiment_date" value="{{ sentiment_date }}">
-            <input type="hidden"  id="sentiment_pos" value="{{ sentiment_pos }}">
-            <input type="hidden"  id="sentiment_neg" value="{{ sentiment_neg }}">
-            <input type="hidden"  id="sentiment_neu" value="{{ sentiment_neu }}">
-            <input type="hidden"  id="sentiment_agv" value="{{ sentiment_agv }}">
-            <script type="text/javascript">
-
-            </script>
-        </div>
 </div>
 
 {% endblock %}

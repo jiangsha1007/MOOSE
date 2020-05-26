@@ -170,6 +170,18 @@ class MOOSEStatisticPullYearmonth(models.Model):
         db_table = 'moose_statistic_pull_yearmonth'
         ordering = ['yearmonth']
 
+
+class MOOSEStatisticPopularityYearmonth(models.Model):
+    community_id = models.IntegerField()
+    yearmonth = models.CharField(max_length=100)
+    popularity_count = models.IntegerField()
+    fork_count = models.IntegerField()
+    star_count = models.IntegerField()
+
+    class Meta:
+        db_table = 'moose_statistic_popularity_yearmonth'
+        ordering = ['yearmonth']
+
 class MOOSEStatisticAuthorYearmonth(models.Model):
     community_id = models.IntegerField()
     yearmonth = models.CharField(max_length=100)
@@ -299,6 +311,57 @@ class MOOSEIndexFormula(models.Model):
         db_table = 'moose_index_formula'
         ordering = ['id']
 
+
+class MOOSEStatisticSentimentType(models.Model):
+    community_id = models.IntegerField()
+    yearmonth = models.CharField(max_length=100)
+    comment_id = models.CharField(max_length=5000)
+    debate = models.IntegerField()
+    work = models.IntegerField()
+    confuse = models.IntegerField()
+    apologize = models.IntegerField()
+    bug = models.IntegerField()
+    third_party = models.IntegerField()
+    doc_standard = models.IntegerField()
+
+    class Meta:
+        db_table = 'moose_statistic_sentiment_type'
+        ordering = ['yearmonth']
+
+class MOOSEStatisticSentimentComment(models.Model):
+    comment_id = models.IntegerField()
+    issue_number = models.IntegerField()
+    oss_id = models.IntegerField()
+    oss_name = models.CharField(max_length=255)
+    user_id = models.IntegerField()
+    user_name = models.CharField(max_length=255)
+    comment_body = models.CharField(max_length=500)
+    create_time = models.CharField(max_length=255)
+
+    class Meta:
+        db_table = 'moose_statistic_sentiment_comment'
+        ordering = ['id']
+
+
+class MOOSESimulation(models.Model):
+    user_id = models.IntegerField()
+    oss_id = models.IntegerField()
+    time = models.CharField(max_length=255)
+    eventType = models.CharField(max_length=255)
+    count = models.IntegerField()
+
+    class Meta:
+        db_table = 'moose_emulation'
+        ordering = ['user_id', 'time']
+
+
+class MOOSESimulationType(models.Model):
+    event_name = models.CharField(max_length=255)
+    event_display_name = models.CharField(max_length=255)
+
+    class Meta:
+        db_table = 'moose_emulation_type'
+        ordering = ['id']
 
 
 

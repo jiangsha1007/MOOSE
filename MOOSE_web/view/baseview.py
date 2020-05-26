@@ -16,7 +16,8 @@ def websocketLink(request):
             except:
                 return render(request, 'index.html')
         else:
-            data = get_overview_data(15)
+            cid = request.GET['cid']
+            data = get_overview_data(cid)
             print(data)
             request.websocket.send(json.dumps(data))
             time.sleep(3)

@@ -1,0 +1,30 @@
+{% extends 'Base.html' %}
+{% load staticfiles %}
+
+{% block page_css %}
+{% endblock %}
+{% block content%}
+    <input type="hidden" id="simulation_date" value="{{ simulation_date }}">
+    <input type="hidden" id="simulation_type" value="{{ simulation_type_name_display }}">
+    <input type="hidden" id="simulation_user" value="{{ simulation_user_id }}">
+    <input type="hidden" id="simulation_user_name" value="{{ simulation_user_name }}">
+    <input type="hidden" id="simulation_result" value="{{ simulation_result }}">
+    {% if simulation_user_id %}
+        {% for per_user in simulation_user_id %}
+            <div class="card">
+                <div class="toolbar toolbar--inner">
+                        <div class="toolbar__label" id="user_{{ per_user }}"></div>
+                </div>
+                <div class="card-body">
+                        <div id="container_simulation_{{ per_user }}" style="height: 400px;margin-left: -100px;margin-right:-100px;margin-top: -20px"></div>
+                        <script type="text/javascript">
+                        </script>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}
+{% block page_js %}
+    <script src="{% static 'js/appjs/simulation.js' %}"></script>
+{% endblock %}

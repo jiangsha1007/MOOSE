@@ -16,15 +16,15 @@ import pandas as pd
 import math
 import numpy as np
 
-client = InfluxDBClient('192.168.3.14', 8086, 'moose', 'moose', 'moose')
+client = InfluxDBClient('106.52.93.154', 8086, 'moose', 'moose', 'moose')
 
 
-def commit(request):
+def activity(request):
     extra_info = dict()
     uid = request.session['user_id']
-    community = get_nav_list(uid)
-    extra_info.update(community)
     cid = request.GET.get('cid')
+    community = get_nav_list(uid, cid)
+    extra_info.update(community)
     commit_yearmonth = MOOSEStatisticCommitYearmonth.objects.filter(community_id=int(cid))
     line_commit_arr = ''
     line_commit_data = ''
@@ -82,16 +82,17 @@ def commit(request):
 
     extra_info.update({'line_pull_merged_data': line_pull_merged_data})
     extra_info.update({'commit_hourday': commit_hourday_arr[:-1]})
-    return render(request, 'commit.html', extra_info)
+    extra_info.update({'path': 2})
+    return render(request, 'activity.html', extra_info)
 
 def issue(request):
     #client = InfluxDBClient('10.162.108.122', 8086, 'moose', 'moose', 'moose')
     extra_info = dict()
     uid = request.session['user_id']
-
-    community = get_nav_list(uid)
-    extra_info.update(community)
     cid = request.GET.get('cid')
+    community = get_nav_list(uid, cid)
+    extra_info.update(community)
+
     try:
         page = request.GET.get('page')
     except:
@@ -136,19 +137,20 @@ def issue(request):
     issue_open_count = int(issue_count)-int(issue_close_count)
 
     extra_info.update({'issue': customer})
-    extra_info.update({'cid': cid})
     extra_info.update({'issue_count': issue_count})
     extra_info.update({'issue_close_count': issue_close_count})
     extra_info.update({'issue_open_count': issue_open_count})
+    extra_info.update({'path': 3})
     return render(request, 'issue.html', extra_info)
 
 
 def pull(request):
     extra_info = dict()
     uid = request.session['user_id']
-    community = get_nav_list(uid)
-    extra_info.update(community)
     cid = request.GET.get('cid')
+    community = get_nav_list(uid, cid)
+    extra_info.update(community)
+
     try:
         page = request.GET.get('page')
     except:
@@ -193,29 +195,36 @@ def pull(request):
     pull_umerged_count = int(pull_count)-int(pull_merged_count)
 
     extra_info.update({'pull': customer})
-    extra_info.update({'cid': cid})
+
+
     extra_info.update({'pull_count': pull_count})
     extra_info.update({'pull_merged_count': pull_merged_count})
     extra_info.update({'pull_umerged_count': pull_umerged_count})
+    extra_info.update({'path': 4})
     return render(request, 'pull.html', extra_info)
 
 def author(request):
     extra_info = dict()
     uid = request.session['user_id']
-    community = get_nav_list(uid)
-    extra_info.update(community)
     cid = request.GET.get('cid')
-    author = MOOSEStatisticAuthor.objects.filter(community_id=int(cid))
+    community = get_nav_list(uid, cid)
+    extra_info.update(community)
+
+    # 最近活跃用户
+    author = MOOSEStatisticAuthor.objects.filter(community_id=int(cid))[0:12]
     extra_info.update({'author': author})
+
+    # 开发者排名
     oss_id = []
     oss_list_id = MOOSECommunityList.objects.values("oss_id", 'oss_name').filter(community_id=int(cid))
     MOOSE_auth = dict()
     for per_oss_id in oss_list_id:
-        MOOSE_auth_list = (MOOSEAuthorList.objects.filter(oss_id=per_oss_id['oss_id'])[0:10])
+        MOOSE_auth_list = (MOOSEAuthorList.objects.filter(oss_id=per_oss_id['oss_id'])[0:12])
         MOOSE_auth[per_oss_id['oss_name']] = MOOSE_auth_list
         oss_id.append(int(per_oss_id['oss_id']))
     print(MOOSE_auth)
     extra_info.update({'MOOSE_auth': MOOSE_auth})
+
     oss_domain = MOOSEDomain.objects.values("domain").filter(oss_id__in=oss_id).annotate(commits=Sum('commits'))[0:10]
     oss_domain_name = ''
     oss_domain_commit = ''
@@ -224,13 +233,14 @@ def author(request):
         oss_domain_commit += str(per_oss_domain['commits']) + ','
     extra_info.update({'oss_domain_name': oss_domain_name})
     extra_info.update({'oss_domain_commit': oss_domain_commit})
+    extra_info.update({'path': 5})
     return render(request, 'author.html', extra_info)
 
 def monitor(request):
     extra_info = dict()
     uid = request.session['user_id']
     cid = request.GET.get('cid')
-    community = get_nav_list(uid)
+    community = get_nav_list(uid, cid)
     extra_info.update(community)
     index_name = MOOSEIndex.objects.all()
     index_name_cal = MOOSEIndex.objects.filter(cal_need=1)
@@ -245,7 +255,7 @@ def monitor(request):
     extra_info.update({'index_name': index_name})
     extra_info.update({'index_name_cal': index_name_cal})
     extra_info.update({'cid': cid})
-
+    extra_info.update({'path': 6})
     return render(request, 'index_monitor.html', extra_info)
 
 def getIndex(request):

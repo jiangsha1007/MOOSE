@@ -17,6 +17,7 @@ class MOOSECommunityList(models.Model):
     add_time = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField()
     meta_id = models.IntegerField()
+    platform = models.IntegerField()
     class Meta:
         db_table = 'moose_community_list'
 

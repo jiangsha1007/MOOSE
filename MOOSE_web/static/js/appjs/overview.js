@@ -1,4 +1,5 @@
 $(function () {
+    var cid = $('#cid').val();
     /*score*/
     var oss_score = $('#oss_score').val();
     var oss_name = $('#oss_name').val();
@@ -6,15 +7,23 @@ $(function () {
     var myChart_score = echarts.init(dom_score);
     draw_score(myChart_score, oss_name, oss_score);
 
-    /*sentiment*/
-    var dom_sentiment = document.getElementById("container_sentiment");
-    var myChart_sentiment = echarts.init(dom_sentiment);
-    var date = $('#sentiment_date').val().split(',');
-    var data_pos = $('#sentiment_pos').val().split(',');
-    var data_neg = $('#sentiment_neg').val().split(',');
-    var data_neu = $('#sentiment_neu').val().split(',');
-    var data_agv = $('#sentiment_agv').val().split(',');
-    draw_sentiment(myChart_sentiment, date, data_pos, data_neg, data_neu, data_agv);
+
+    /*net*/
+    var dom_net = document.getElementById("container_net");
+    var myChart_net = echarts.init(dom_net, "shine");
+    var data_categories = eval('(' +$('#net_categories').val() + ')'); ;
+    var data_nodes = eval('(' +$('#net_nodes').val()+ ')') ;
+    var data_links = eval('(' +$('#net_links').val() + ')');
+    draw_net(myChart_net, data_categories, data_nodes, data_links);
+
+    /*fork star pop*/
+    var dom_pop = document.getElementById("container_pop");
+    var myChart_pop = echarts.init(dom_pop,"shine");
+    var date_pop = $('#line_pop_arr').val().split(',');
+    var data_pop = $('#line_pop_data').val().split(',');
+    var data_fork = $('#line_fork_data').val().split(',');
+    var data_star = $('#line_star_data').val().split(',');
+    draw_pop(myChart_pop, date_pop, data_pop, data_fork, data_star);
 
     /*sem*/
     var pop = $("#oss_popularity_sem").val();
@@ -40,7 +49,7 @@ $(function () {
 
     /*language*/
     var dom_language = document.getElementById("container_language");
-    var myChart_language = echarts.init(dom_language);
+    var myChart_language = echarts.init(dom_language,"shine");
     var data = $('#bar_language_data').val().split(',');
     var date = $('#bar_language_arr').val().split(',');
     draw_language(myChart_language, date, data);
@@ -49,11 +58,11 @@ $(function () {
     var websocket;
  // 首先判断是否 支持 WebSocket  name身份标识  我当前用的 用户名，
     if('WebSocket' in window) {
-        websocket = new WebSocket("ws://127.0.0.1:8000/websocketLink/");
+        websocket = new WebSocket("ws://127.0.0.1:8000/websocketLink?id="+cid);
     } else if('MozWebSocket' in window) {
-        websocket = new MozWebSocket("ws://localhost:8000/websocketLink/");
+        websocket = new MozWebSocket("ws://localhost:8000/websocketLink?id="+cid);
     } else {
-        websocket = new SockJS("ws://localhost:8000/websocketLink/");
+        websocket = new SockJS("ws://localhost:8000/websocketLink?id="+cid);
     }
     // 打开连接时    formatMsg是我自定义的消息提示
     websocket.onopen = function(event) {
@@ -120,7 +129,7 @@ $(function () {
     };
     // 断开连接时
     websocket.onclose = function(event) {
-          alert('qqqq')
+
     };
         //关闭websocket连接
     $('#close_websocket').click(function () {
@@ -136,6 +145,8 @@ $(function () {
         myChart_sentiment.resize();
         myChart_sem.resize();
         myChart_language.resize();
+        myChart_net.resize();
+        myChart_pop.resize();
     }
 
 
@@ -216,203 +227,6 @@ function draw_score(myChart, oss_name, oss_score) {
     }
 }
 
-function draw_sentiment(myChart, date, data_pos, data_neg, data_neu, data_agv){
-    var option = {
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'cross',
-                crossStyle: {
-                    color: '#fff'
-                }
-            }
-        },
-        legend: {
-            data:['positive','negative','neutrality'],
-            textStyle:{//图例文字的样式
-                color:'#fff',
-                fontSize:16
-            }
-        },
-        xAxis: [
-            {
-                type: 'category',
-                data: date,
-                axisPointer: {
-                    type: 'shadow'
-                },
-                axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: '#fff',
-                        fontSize:'12'
-                    }
-                },
-                axisLine:{
-                    lineStyle:{
-                        color:'rgba(255,255,255,0.1)',
-                        width:1,//这里是为了突出显示加上的		                        }
-                    }
-                },
-                splitLine:{
-                    show:true,
-                    lineStyle:{
-                        color:'rgba(255,255,255,0.1)',
-                    }
-                }
-            }
-        ],
-        yAxis: [
-            {
-                type: 'value',
-                name: 'issue comment number',
-                min: 0,
-                boundaryGap: [0, '10%'],
-                axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: '#fff',
-                        fontSize:'12'
-                }},
-                nameTextStyle:{//图例文字的样式
-                    color:'#fff',
-                    fontSize:12
-                },
-                axisLine:{
-                    lineStyle:{
-                        color:'rgba(255,255,255,0.1)',
-                        width:1,//这里是为了突出显示加上的		                        }
-                    }
-                },
-                splitLine:{
-                    show:true,
-                    lineStyle:{
-                        color:'rgba(255,255,255,0.1)',
-                    }
-                }
-            },
-            {
-                type: 'value',
-                name: 'Emotion degree',
-                min: -1,
-                interval: 1,
-                axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: '#fff',
-                        fontSize:'12'
-                }},
-                nameTextStyle:{//图例文字的样式
-                    color:'#fff',
-                    fontSize:12
-                },
-                axisLine:{
-                    lineStyle:{
-                        color:'rgba(255,255,255,0.1)',
-                        width:1,//这里是为了突出显示加上的		                        }
-                    }
-                },
-                splitLine:{
-                    show:true,
-                    lineStyle:{
-                        color:'rgba(255,255,255,0.1)',
-                    }
-                },
-
-            }
-        ],
-        dataZoom: [{
-        type: 'inside',
-        start: 0,
-        end: 100
-        }, {
-        start: 0,
-        end: 100,
-        handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-        handleSize: '80%',
-        handleStyle: {
-            color: '#fff',
-            shadowBlur: 3,
-            shadowColor: 'rgba(0, 0, 0, 0.6)',
-            shadowOffsetX: 2,
-            shadowOffsetY: 2
-        },
-        textStyle:{
-            color:'#fff',
-        },
-        }],
-    series: [
-        {
-            name:'positive',
-            type:'bar',
-            data:data_pos,
-            itemStyle:{ normal:{ color:'#1CDDB1' } },
-        },
-        {
-            name:'negative',
-            type:'bar',
-            data:data_neg,
-            itemStyle:{ normal:{ color:'#bb414d' } },
-        },
-        {
-            name:'neutrality',
-            type:'bar',
-            data:data_neu,
-            itemStyle:{ normal:{ color:'#ffffff' } },
-        },
-        {
-            name:'Emotion degree',
-            type:'line',
-            yAxisIndex: 1,
-            data:data_agv,
-            itemStyle:{ normal:{ color:'#ffbf00' } },
-            markArea:{
-                data:[[
-                    {
-                        yAxis: 0,
-                        name:'positive area',
-                        itemStyle:{ //控制当前区域样式
-                           color:'rgba(28, 221, 177,0.3)'
-                       }
-                    },{
-                        yAxis:1
-                    }
-                ],
-                [
-                    {
-                        yAxis:-1
-                    },
-                    {
-                        yAxis: 0,
-                        name:'negative area',
-                        itemStyle:{ //控制当前区域样式
-                           color:'rgba(187, 65, 77,0.3)'
-                       }
-
-                    }
-                ]]
-            },
-            markLine: {
-                data: [
-                    {
-                        yAxis: 0,
-                        name:'neutrality',
-                        itemStyle: {
-                            normal: {
-                                color: '#ff3300',
-                                width: 3,
-                            }
-                        }
-                    },
-                ]
-            },
-        }
-    ]
-    };
-    if (option && typeof option === "object") {
-    myChart.setOption(option, true);
-    }
-}
 
 function draw_sem(myChart, pop, ncdpr, ncdic, ncdcc, ncdrc, ncdr, npr, nprc, prrr, nprrc, nic, ncd, ncc, nd, ni, nl, icr, prmr) {
     var option = {
@@ -1052,10 +866,178 @@ function draw_language(myChart, date, data) {
         series: [{
             data:  data,
             type: 'bar',
-            itemStyle:{ normal:{ color:'#ffffff' } },
         }]
     };
     if (option && typeof option === "object") {
         myChart.setOption(option, true);
     }
+}
+
+function draw_net(myChart, data_categories, data_nodes, data_links) {
+        myChart.hideLoading();
+        var option = {
+                title: {show:false,text: 'Collaborators'},
+                tooltip: {},
+                legend: [{
+                    data: data_categories.map(function (a) {//显示策略
+                            return a.name;
+                        }),
+                textStyle: { //图例文字的样式
+                    color: '#fff',
+                    fontSize: 12
+                },
+                }],
+                animation: false,
+                series : [
+        {
+            name: '',
+            type: 'graph',
+            layout: 'force',
+            data: data_nodes,//节点数据
+            links: data_links,//节点边数据
+            categories: data_categories,//策略
+            roam: true,//是否开启滚轮缩放和拖拽漫游，默认为false（关闭），其他有效输入为true（开启），'scale'（仅开启滚轮缩放），'move'（仅开启拖拽漫游）
+            label: {
+                normal: {
+                    show:'false',
+                    position: 'right'
+                }
+            },
+            slient:false,//是否响应点击事件，为false的时候就是响应
+            force: {
+                repulsion: 200
+            }
+        }]
+
+        };
+        myChart.setOption(option);
+}
+var option_line = {
+    tooltip: {
+            trigger: 'axis',
+            position: function (pt) {
+                return [pt[0], '10%'];
+            }
+        },
+    legend: {
+            data:['popularity','fork','star'],
+            textStyle:{//图例文字的样式
+                color:'#fff',
+                fontSize:16
+            }
+        },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        axisLabel: {
+            show: true,
+            textStyle: {
+                color: '#fff',
+                fontSize:'12'
+            }
+        },
+        axisLine:{
+            lineStyle:{
+                color:'rgba(255,255,255,0.1)',
+                width:1,//这里是为了突出显示加上的		                        }
+            }
+        },
+        splitLine:{
+            show:true,
+            lineStyle:{
+                color:'rgba(255,255,255,0.1)',
+            }
+        }
+    },
+    yAxis: {
+        type: 'value',
+        boundaryGap: [0, '10%'],
+        axisLabel: {
+            show: true,
+            textStyle: {
+                color: '#fff',
+                fontSize:'12'
+            }
+        },
+        axisLine:{
+            lineStyle:{
+                color:'rgba(255,255,255,0.1)',
+                width:1,//这里是为了突出显示加上的		                        }
+            }
+        },
+        splitLine:{
+            show:true,
+            lineStyle:{
+                color:'rgba(255,255,255,0.1)',
+            }
+        }
+    },
+    dataZoom: [{
+        type: 'inside',
+        start: 0,
+        end: 100
+    }, {
+        start: 0,
+        end: 100,
+        handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+        handleSize: '80%',
+        handleStyle: {
+            color: '#fff',
+            shadowBlur: 3,
+            shadowColor: 'rgba(0, 0, 0, 0.6)',
+            shadowOffsetX: 2,
+            shadowOffsetY: 2
+        },
+        textStyle:{
+            color:'#fff',
+        },
+    }],
+    series: [
+        {
+            type: 'line',
+            smooth:false,
+            symbol: 'none',
+            sampling: 'average',
+
+        },
+        {
+            type: 'line',
+            smooth:false,
+            symbol: 'none',
+            sampling: 'average',
+
+        },
+        {
+            type: 'line',
+            smooth:false,
+            symbol: 'none',
+            sampling: 'average',
+
+        }
+    ]
+}
+function draw_pop(myChart, date, data_pop, data_fork, data_star){
+    myChart.setOption(option_line, true);
+    myChart.setOption({
+        xAxis: {
+            data:date
+        },
+        series:[
+            {
+                type:'line',
+                name:'popularity',
+                data: data_pop
+            },
+            {
+                type:'line',
+                name:'fork',
+                data: data_fork
+            },
+            {
+                type:'line',
+                name:'star',
+                data: data_star
+            }
+        ]
+    });
 }

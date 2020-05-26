@@ -12,14 +12,21 @@ import queue
 import json
 
 
-def get_nav_list(uid):
+def get_nav_list(uid, cid):
     extra_info = dict()
     community = MOOSECommunity.objects.filter(user_id=int(uid))
+    current_community = MOOSECommunity.objects.filter(id=int(cid))
+    if current_community is not None and len(current_community) > 0:
+        current_community_name = current_community[0].community_name
+    else:
+        current_community_name = ''
     community_list = MOOSECommunityList.objects.filter(community_id__in=community)
     extra_info.__setitem__('community', community)
     extra_info.__setitem__('community_list', community_list)
     user = MOOSEAdmin.objects.get(id=uid)
     extra_info.__setitem__('user', user)
+    extra_info.__setitem__('cid', int(cid))
+    extra_info.__setitem__('current_community_name', current_community_name)
     return extra_info
 
 def get_html_text(url):

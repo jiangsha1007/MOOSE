@@ -53,7 +53,7 @@
                         <th>Lines removed</th>
                         <th>First commit</th>
                         <th>Last commit</th>
-                        <th>Active days</th>
+                        <th>Age</th>
                         <th>Company</th>
                     </tr>
                 </thead>
@@ -75,7 +75,7 @@
                             <td>{{ author_info.lines_removed }}</td>
                             <td>{{ author_info.first_commit }}</td>
                             <td>{{ author_info.last_commit }}</td>
-                            <td>{{ author_info.active_days }}</td>
+                            <td>{{ author_info.age }}</td>
                             <td>{{ author_info.user.user_company }}</td>
                         </tr>
                     {% endfor %}

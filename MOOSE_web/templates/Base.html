@@ -26,6 +26,11 @@
         <script type="text/javascript" src="{% static 'js/csrf.js'%}"></script>
         <script src="{% static 'vendor/bower_components/select2/dist/js/select2.full.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/socket.js' %}"></script>
+        <script type="text/javascript"  src="{% static 'js/westeros.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/dark.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/wonderland.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/essos.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/shine.js' %}"></script>
         {% block page_js %}
 
         {% endblock %}
@@ -60,7 +65,7 @@
                     </div>
                 </form>
 
-                <ul class="top-nav">
+                <!--<ul class="top-nav">
                     <li class="hidden-xl-up"><a href="" data-sa-action="search-open"><i class="zmdi zmdi-search"></i></a></li>
 
                     <li class="dropdown">
@@ -340,7 +345,7 @@
                     <li class="hidden-xs-down">
                         <a href="" class="top-nav__themes" data-sa-action="aside-open" data-sa-target=".themes"><i class="zmdi zmdi-palette"></i></a>
                     </li>
-                </ul>
+                </ul>-->
 
                 <div class="clock hidden-md-down">
                     <div class="time">
@@ -373,28 +378,59 @@
                     <ul class="navigation">
                         <li class="navigation__active"><a href="../index"><i class="zmdi zmdi-home"></i> Home</a></li>
                         <li class="navigation__active"><a href="../new"><i class="zmdi zmdi-home"></i> New Monitor</a></li>
-                        <li class="navigation__sub @@variantsactive">
-                            {% if community %}
-                                {% for per_community in community %}
-                                    <a href=""><i class="zmdi zmdi-view-week"></i> {{ per_community.community_name }}</a>
-                                    <ul>
-                                        <li class="navigation"><a href="../overview/?cid={{ per_community.id }}">Overview</a></li>
-                                        <li class="navigation"><a href="../commit/?cid={{ per_community.id }}">Activity</a></li>
-                                        <li class="navigation"><a href="../issue/?cid={{ per_community.id }}">Issue</a></li>
-                                        <li class="navigation"><a href="../pull/?cid={{ per_community.id }}">Pull Request</a></li>
-                                        <li class="navigation"><a href="../author/?cid={{ per_community.id }}">Developer</a></li>
-                                        <li class="navigation"><a href="../monitor/?cid={{ per_community.id }}">Index Monitor</a></li>
-                                        <!--
-                                        {% for per_community_list in community_list %}
-                                        {% if per_community_list.community_id == per_community.id %}
-                                            <li class="navigation__sub @@variantsactive"><a href="">{{ per_community_list.oss_name }}</a></li>
-                                        {% endif %}
-                                    {% endfor %}-->
-                                    </ul>
-
-                                {% endfor %}
-                            {% endif %}
-                        </li>
+                        {% if community %}
+                            {% for per_community in community %}
+                                {% if per_community.id == cid %}
+                                    <li class="navigation__sub @@variantsactive navigation__sub--active navigation__sub--toggled">
+                                {% else %}
+                                    <li class="navigation__sub @@variantsactive">
+                                {% endif %}
+                                        <a href=""><i class="zmdi zmdi-view-week"></i> {{ per_community.community_name }}</a>
+                                        <ul>
+                                            {% if path == 1 and per_community.id == cid  %}
+                                                <li class="navigation__active"><a href="../overview/?cid={{ per_community.id }}">Overview</a></li>
+                                            {% else %}
+                                                <li class="navigation"><a href="../overview/?cid={{ per_community.id }}">Overview</a></li>
+                                            {% endif %}
+                                            {% if path == 2 and per_community.id == cid %}
+                                                <li class="navigation__active"><a href="../activity/?cid={{ per_community.id }}">Activity</a></li>
+                                            {% else %}
+                                                <li class="navigation"><a href="../activity/?cid={{ per_community.id }}">Activity</a></li>
+                                            {% endif %}
+                                            {% if path == 3 and per_community.id == cid %}
+                                                <li class="navigation__active"><a href="../issue/?cid={{ per_community.id }}">Issue</a></li>
+                                            {% else %}
+                                                <li class="navigation"><a href="../issue/?cid={{ per_community.id }}">Issue</a></li>
+                                            {% endif %}
+                                            {% if path == 4 and per_community.id == cid %}
+                                                <li class="navigation__active"><a href="../pull/?cid={{ per_community.id }}">Pull Request</a></li>
+                                            {% else %}
+                                                <li class="navigation"><a href="../pull/?cid={{ per_community.id }}">Pull Request</a></li>
+                                            {% endif %}
+                                            {% if path == 5 and per_community.id == cid %}
+                                                <li class="navigation__active"><a href="../author/?cid={{ per_community.id }}">Developer</a></li>
+                                            {% else %}
+                                                <li class="navigation"><a href="../author/?cid={{ per_community.id }}">Developer</a></li>
+                                            {% endif %}
+                                            {% if path == 6 and per_community.id == cid %}
+                                                <li class="navigation__active"><a href="../monitor/?cid={{ per_community.id }}">Index Monitor</a></li>
+                                            {% else %}
+                                                <li class="navigation"><a href="../monitor/?cid={{ per_community.id }}">Index Monitor</a></li>
+                                            {% endif %}
+                                            {% if path == 7 and per_community.id == cid %}
+                                                <li class="navigation__active"><a href="../sentiment/?cid={{ per_community.id }}">Sentiment</a></li>
+                                            {% else %}
+                                                <li class="navigation"><a href="../sentiment/?cid={{ per_community.id }}">Sentiment</a></li>
+                                            {% endif %}
+                                            {% if path == 8 and per_community.id == cid %}
+                                                <li class="navigation__active"><a href="../simulation/?cid={{ per_community.id }}">Simulation</a></li>
+                                            {% else %}
+                                                <li class="navigation"><a href="../simulation/?cid={{ per_community.id }}">Simulation</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </li>
+                            {% endfor %}
+                        {% endif %}
                     </ul>
                 </div>
             </aside>
@@ -414,65 +450,11 @@
                 </div>
             </div>
 
-            <section class="content">
+            <section class="content" >
                 {% block content%}
 
                 {% endblock %}
-                <!--<footer class="footer hidden-xs-down">
-                    <p>© Super Admin Responsive. All rights reserved.</p>
-
-                    <ul class="nav footer__nav">
-                        <a class="nav-link" href="">Homepage</a>
-
-                        <a class="nav-link" href="">Company</a>
-
-                        <a class="nav-link" href="">Support</a>
-
-                        <a class="nav-link" href="">News</a>
-
-                        <a class="nav-link" href="">Contacts</a>
-                    </ul>
-                </footer>->
             </section>
-        </main>
-
-        <!-- Older IE warning message -->
-            <!--[if IE]>
-                <div class="ie-warning">
-                    <h1>Warning!!</h1>
-                    <p>You are using an outdated version of Internet Explorer, please upgrade to any of the following web browsers to access this website.</p>
-
-                    <div class="ie-warning__downloads">
-                        <a href="/www.google.com/chrome">
-                            <img src="img/browsers/chrome.png" alt="">
-                        </a>
-
-                        <a href="https://www.mozilla.org/en-US/firefox/new">
-                            <img src="img/browsers/firefox.png" alt="">
-                        </a>
-
-                        <a href="/www.opera.com">
-                            <img src="img/browsers/opera.png" alt="">
-                        </a>
-
-                        <a href="https://support.apple.com/downloads/safari">
-                            <img src="img/browsers/safari.png" alt="">
-                        </a>
-
-                        <a href="https://www.microsoft.com/en-us/windows/microsoft-edge">
-                            <img src="img/browsers/edge.png" alt="">
-                        </a>
-
-                        <a href="/windows.microsoft.com/en-us/internet-explorer/download-ie">
-                            <img src="img/browsers/ie.png" alt="">
-                        </a>
-                    </div>
-                    <p>Sorry for the inconvenience!</p>
-                </div>
-            <![endif]-->
-
-        <!-- Javascript -->
-        <!-- Vendors -->
 
         <script src="{% static 'vendor/bower_components/popper.js/dist/umd/popper.min.js' %}"></script>
         <script src="{% static 'vendor/bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
@@ -500,5 +482,6 @@
 
         <!-- App functions and actions -->
         <script src="{% static 'js/app.min.js' %}"></script>
+        </main>
     </body>
 </html>
